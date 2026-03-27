@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Multimodal Classification Report - Group LTH</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary-color: #2c3e50;
+        --secondary-color: #3498db;
+        --accent-color: #e67e22;
+        --bg-light: #f4f7f6;
+        --white: #ffffff;
+        --text-main: #333;
+        --text-muted: #7f8c8d;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: var(--text-main);
+        background-color: var(--bg-light);
+        margin: 0;
+        padding: 0;
+      }
+
+      /* Navigation Bar */
+      nav {
+        background: var(--primary-color);
+        padding: 1rem 2rem;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      nav a {
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+        margin-left: 20px;
+        transition: color 0.3s;
+      }
+
+      nav a:hover {
+        color: var(--secondary-color);
+      }
+
+      .container {
+        max-width: 1000px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+
+      /* Section Titles */
+      .section-title {
+        color: var(--primary-color);
+        border-bottom: 3px solid var(--secondary-color);
+        padding-bottom: 10px;
+        margin-top: 50px;
+        font-size: 2rem;
+      }
+
+      /* Content Boxes */
+      .content-box {
+        background: var(--white);
+        padding: 25px;
+        margin-bottom: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      }
+
+      .content-box h3 {
+        color: var(--primary-color);
+        border-left: 5px solid var(--secondary-color);
+        padding-left: 15px;
+        margin-top: 0;
+      }
+
+      .intro-text {
+        font-size: 1.1rem;
+        color: #555;
+        margin-bottom: 30px;
+      }
+
+      /* Stats Grid */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        margin: 25px 0;
+        text-align: center;
+      }
+
+      .stat-item {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        border: 1px solid #dee2e6;
+        transition: transform 0.3s;
+      }
+
+      .stat-item:hover {
+        transform: translateY(-5px);
+      }
+
+      .stat-value {
+        display: block;
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: var(--primary-color);
+      }
+
+      .stat-label {
+        font-size: 0.95rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      /* Images & Captions */
+      .image-container {
+        text-align: center;
+        background: #fafafa;
+        padding: 25px;
+        border: 1px dashed #ddd;
+        margin: 25px 0;
+        border-radius: 8px;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .caption {
+        font-style: italic;
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        margin-top: 15px;
+      }
+
+      /* Code Block */
+      pre {
+        background: #272822;
+        color: #f8f8f2;
+        padding: 20px;
+        border-radius: 8px;
+        overflow-x: auto;
+        font-size: 0.9rem;
+        line-height: 1.4;
+      }
+
+      code {
+        font-family: "Courier New", Courier, monospace;
+      }
+
+      footer {
+        text-align: center;
+        padding: 40px 0;
+        color: var(--text-muted);
+        border-top: 1px solid #ddd;
+        margin-top: 60px;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .stats-grid {
+          grid-template-columns: 1fr;
+        }
+        .section-title {
+          font-size: 1.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div style="color: white; font-weight: bold; font-size: 1.2rem">
+        Group LTH - DL Assignment
+      </div>
+      <div>
+        <a href="index.html">Home</a>
+        <a href="image.html">Image</a>
+        <a href="text.html">Text</a>
+        <a href="multimodal.html" style="color: var(--secondary-color)"
+          >Multimodal</a
+        >
+      </div>
+    </nav>
+
+    <div class="container">
+      <section id="dataset-exploration">
+        <h2 class="section-title">1. Dataset Exploration & Preprocessing</h2>
+
+        <div class="content-box">
+          <h3>Dataset Overview: MMIMDb</h3>
+          <p>
+            Source:
+            <a
+              href="https://huggingface.co/datasets/sxj1215/mmimdb"
+              target="_blank"
+              >Hugging Face - MMIMDb Dataset</a
+            >
+          </p>
+          <p>
+            The project utilizes the
+            <strong>MMIMDb (Multi-Modal IMDb)</strong> dataset, a benchmark for
+            multimodal classification tasks. The objective is to predict movie
+            genres based on both visual information (movie posters) and textual
+            information (plot summaries).
+          </p>
+
+          <div class="stats-grid">
+            <div class="stat-item">
+              <span class="stat-value">15,552</span>
+              <span class="stat-label">Total Samples</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value">26</span>
+              <span class="stat-label">Unique Classes</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value">Multi-label</span>
+              <span class="stat-label">Problem Type</span>
+            </div>
+          </div>
+
+          <h4>Data Characteristics:</h4>
+          <ul>
+            <li>
+              <strong>Textual Data:</strong> The <code>plot</code> attribute
+              provides a concise summary of the movie's content.
+            </li>
+            <li>
+              <strong>Visual Data:</strong> The <code>images</code> attribute
+              contains the official movie posters.
+            </li>
+            <li>
+              <strong>Labels:</strong> Common genres include Drama (8,424),
+              Comedy (5,108), Romance (3,226), etc.
+            </li>
+          </ul>
+          <div class="image-container">
+            <img
+              src="/public/multimodal/dataset.png"
+              alt="Dataset Sample Preview"
+            />
+            <p class="caption">
+              Preview of the MMIMDb dataset structure showing plots and posters.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="eda-details">
+        <h2 class="section-title">
+          2. In-depth Exploratory Data Analysis (EDA)
+        </h2>
+
+        <p class="intro-text">
+          To understand the complexity of the MMIMDb dataset, we conducted a
+          comprehensive analysis focusing on label distribution, multi-label
+          characteristics, and textual features.
+        </p>
+
+        <div class="content-box">
+          <h3>Genre Distribution & Class Imbalance</h3>
+          <p>
+            Analysis of the 26 unique genres reveals a significant
+            <strong>Long-tail distribution</strong>. Dominant genres comprise
+            the majority of the dataset, while niche genres like
+            <em>Film-Noir</em>
+            have significantly fewer samples, presenting a challenge for model
+            convergence.
+          </p>
+          <div class="image-container">
+            <img
+              src="/public/multimodal/genre_distribution.png"
+              alt="Genre Distribution Chart"
+            />
+            <p class="caption">
+              Figure 1: Distribution of samples across 26 movie genres,
+              highlighting the class imbalance.
+            </p>
+          </div>
+        </div>
+
+        <div class="content-box">
+          <h3>Multi-label Characteristics</h3>
+          <p>
+            MMIMDb is inherently multi-label. Our analysis shows that most
+            movies are associated with
+            <strong>2 to 3 genres</strong> simultaneously. This overlap requires
+            the model to capture complex relationships between different
+            categories.
+          </p>
+          <div class="image-container">
+            <img
+              src="/public/multimodal/labels_per_movie.png"
+              alt="Genres per Movie Chart"
+              style="max-width: 80%"
+            />
+            <p class="caption">
+              Figure 2: Frequency of the number of labels assigned per movie.
+            </p>
+          </div>
+        </div>
+
+        <div class="content-box">
+          <h3>Genre Correlation (Co-occurrence)</h3>
+          <p>
+            The correlation matrix visualizes how genres frequently appear
+            together (e.g., <em>Action</em> often co-occurs with
+            <em>Adventure</em>). Understanding these dependencies is crucial for
+            the <strong>Joint Embedding</strong> strategy.
+          </p>
+          <div class="image-container">
+            <img
+              src="/public/multimodal/correlation_matrix.png"
+              alt="Co-occurrence Heatmap"
+            />
+            <p class="caption">
+              Figure 3: Heatmap illustrating the co-occurrence patterns between
+              genres.
+            </p>
+          </div>
+        </div>
+
+        <div class="content-box">
+          <h3>Textual Feature Analysis</h3>
+          <p>
+            We analyzed the word count distribution of the movie plots. This
+            guided our decision on the
+            <code>max_length</code> parameter for the DistilBERT tokenizer to
+            ensure context isn't truncated.
+          </p>
+          <div class="image-container">
+            <img
+              src="/public/multimodal/text_length.png"
+              alt="Text Length Distribution"
+              style="max-width: 90%"
+            />
+            <p class="caption">
+              Figure 4: Distribution of word counts in movie plot summaries.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="dataloader-setup">
+        <div class="container">
+          <h2 class="section-title">3. Dataset & DataLoader Setup</h2>
+
+          <p class="intro-text">
+            To build an efficient training pipeline, we implemented a two-stage
+            process: first, localizing the dataset for faster access, and
+            second, creating a custom PyTorch Dataset to handle multimodal
+            inputs (text and images) simultaneously.
+          </p>
+
+          <div class="content-box">
+            <h3>Stage 1: Data Localization & Pre-processing</h3>
+            <p>
+              Raw data from Hugging Face is processed and stored locally. This
+              stage involves resizing images to a base size of
+              <strong>448x448</strong> and extracting movie plot and list of
+              genres of each sample into a persistent CSV metadata file. This
+              ensures the training loop doesn't depend on network latency.
+            </p>
+            <pre><code class="language-python">
+# Key Pre-processing Logic:
+# 1. Image resizing to save disk space while maintaining ViT quality
+img_obj.convert('RGB').resize((448, 448)).save(img_path, quality=90)
+
+# 2. Metadata extraction into a CSV for persistent use
+data_list.append({
+    'plot': plot_text,
+    'image_path': img_path,
+    'genres': "|".join(genres_list) # Pipe-separated for CSV safety
+})
+      </code></pre>
+            <div class="image-container">
+              <img
+                src="/public/multimodal/mmidb_metadata.png"
+                alt="MMIDB Metadata Sample"
+                style="max-width: 90%"
+              />
+              <p class="caption">
+                Figure 5: Sample of the processed metadata CSV containing plots,
+                image paths, and genre labels.
+              </p>
+            </div>
+            <div>
+              Since movies often belong to multiple categories simultaneously,
+              this project is framed as a
+              <strong>multi-label classification task</strong>. To handle this,
+              we utilized the <code>MultiLabelBinarizer</code> from the
+              <em>scikit-learn</em> library.
+            </div>
+            <p>
+              <strong>Final Output:</strong> Each sample is assigned a
+              ground-truth vector of size <strong>N=26</strong> (the total
+              number of unique genres in the MMIMDb dataset), where a
+              <strong>1</strong> indicates the presence of a genre and
+              <strong>0</strong> indicates its absence.
+            </p>
+          </div>
+
+          <div class="content-box">
+            <h3>Stage 2: Custom Multimodal PyTorch Dataset</h3>
+            <p>
+              We defined the <code>MMIMDbLocalDataset</code> class to perform
+              on-the-fly transformations. It uses
+              <strong>DistilBERT Tokenizer</strong> for text and
+              <strong>ViT Image Processor</strong> for visual data.
+            </p>
+
+            <pre><code class="language-python">
+class MMIMDbLocalDataset(Dataset):
+    def __init__(self, df, tokenizer, image_processor, max_len=128):
+        self.df = df.reset_index(drop=True)
+        self.tokenizer = tokenizer
+        self.image_processor = image_processor
+        self.max_len = max_len
+            </code></pre>
+
+            <h4>Processing Workflow:</h4>
+            <ul>
+              <li>
+                <strong>Text Tokenization:</strong> Plot summaries are processed
+                using the <code>AutoTokenizer</code> from the
+                <strong>distilbert-base-uncased</strong> model. We apply a fixed
+                <code>max_length</code> of <strong>128 tokens</strong>,
+                utilizing <code>truncation=True</code> and
+                <code>padding='max_length'</code> to ensure uniform batch
+                shapes.
+              </li>
+              <li>
+                <strong>Image Feature Extraction:</strong> Posters are prepared
+                via the <code>AutoImageProcessor</code> for
+                <strong>ViT</strong>. This involves resizing the images to
+                <strong>224x224 pixels</strong> and normalizing the pixel values
+                based on the ImageNet mean and standard deviation.
+              </li>
+              <li>
+                <strong>Error Handling:</strong> A <code>try-except</code> block
+                is implemented within the <code>__getitem__</code> method. In
+                the event of a corrupted image file, the system automatically
+                generates a <strong>blank "fallback" tensor</strong> to prevent
+                the training loop from crashing.
+              </li>
+            </ul>
+
+            <pre><code class="language-python">
+# Dataset __getitem__ Implementation:
+def __getitem__(self, idx):
+    row = self.df.iloc[idx]
+        
+    # --- Text Processing ---
+    text_enc = self.tokenizer(
+        str(row['plot']), 
+        truncation=True, 
+        max_length=self.max_len, 
+        padding='max_length', 
+        return_tensors='pt'
+    )
+    
+    # --- Image Processing (Loading from local file path) ---
+    try:
+        image = Image.open(row['image_path']).convert('RGB')
+        # ViT requires 224x224 input size
+        image = image.resize((224, 224))
+        image_enc = self.image_processor(images=image, return_tensors="pt")
+    except Exception as e:
+        # Fallback if the image file is corrupted or missing
+        image = Image.new('RGB', (224, 224))
+        image_enc = self.image_processor(images=image, return_tensors="pt")
+    
+    # --- Label Handling ---
+    labels = torch.tensor(row['labels_binary'], dtype=torch.float)
+    
+    return {
+        'input_ids': text_enc['input_ids'].squeeze(0),
+        'attention_mask': text_enc['attention_mask'].squeeze(0),
+        'pixel_values': image_enc['pixel_values'].squeeze(0),
+        'labels': labels
+    }
+      </code></pre>
+          </div>
+
+          <div class="content-box">
+            <h3>Stage 3: Data Splitting & Loading</h3>
+            <p>
+              The dataset is split into <strong>80% Training</strong>,
+              <strong>10% Validation</strong>, and
+              <strong>10% Testing</strong> sets to ensure unbiased evaluation.
+            </p>
+            <div class="stats-grid">
+              <div class="stat-item">
+                <span class="stat-value">12,441</span>
+                <span class="stat-label">Train Samples</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-value">1,555</span>
+                <span class="stat-label">Validation Samples</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-value">16</span>
+                <span class="stat-label">Batch Size</span>
+              </div>
+            </div>
+            <p>
+              PyTorch <code>DataLoader</code> is used to shuffle the training
+              data and provide batches of 16 samples to the GPU, optimizing the
+              hardware utilization during the fine-tuning process.
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer>
+      <p>© 2026 Group LTH - Ho Chi Minh City University of Technology</p>
+      <p>Faculty of Computer Science and Engineering</p>
+    </footer>
+  </body>
+</html>
