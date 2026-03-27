@@ -149,6 +149,49 @@
         margin-top: 15px;
       }
 
+      .results-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        background: #fff;
+      }
+      .results-table th,
+      .results-table td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: center;
+      }
+      .results-table th {
+        background-color: #f8f9fa;
+        color: #333;
+      }
+      .highlight-text {
+        color: #27ae60;
+        font-weight: bold;
+      }
+      .observation-box {
+        background: #fdfdfd;
+        padding: 20px;
+        border-left: 5px solid #3498db;
+        margin-top: 15px;
+      }
+      .conclusion-highlight {
+        background: #e8f4fd;
+        border: 1px solid #3498db;
+      }
+      .grid-two-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-bottom: 20px;
+      }
+      .model-card {
+        background: #f9f9f9;
+        padding: 15px;
+        border-radius: 8px;
+        border: 1px solid #eee;
+      }
+
       /* Code Block */
       pre {
         background: #272822;
@@ -527,6 +570,420 @@ def __getitem__(self, idx):
           </div>
         </div>
       </section>
+
+      <section id="image-baseline">
+        <div class="container">
+          <h2 class="section-title">4. Image-only Baseline Models</h2>
+
+          <p class="intro-text">
+            To establish a robust baseline for visual feature extraction, we
+            implemented and compared two state-of-the-art architectures. This
+            comparison helps determine whether local spatial features (CNN) hoặc
+            global context (Transformers) are more effective for decoding movie
+            genres from posters.
+          </p>
+
+          <div class="content-box">
+            <h3>4.1 Architectural Selection: ResNet50 vs. ViT-Base</h3>
+            <div class="grid-two-col">
+              <div class="model-card">
+                <h4>ResNet50 (CNN)</h4>
+                <p>
+                  A 50-layer deep Residual Network that utilizes convolutional
+                  layers and skip connections. It is highly efficient at
+                  capturing <strong>local patterns</strong> like shapes,
+                  textures, and specific objects within a poster.
+                </p>
+              </div>
+              <div class="model-card">
+                <h4>ViT-Base (Vision Transformer)</h4>
+                <p>
+                  Treats an image as a sequence of patches (16x16 pixels). Using
+                  the
+                  <strong>Self-Attention mechanism</strong>, ViT captures global
+                  dependencies, which is crucial for understanding the overall
+                  artistic composition and mood.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="content-box">
+            <h3>4.2 Training Methodology</h3>
+            <p>
+              Both models were initialized with
+              <strong>Pre-trained Weights from ImageNet-1K</strong>. Due to the
+              multi-label nature of the task, we utilized specific
+              configurations:
+            </p>
+            <ul>
+              <li>
+                <strong>Optimization:</strong> AdamW optimizer with learning
+                rates of <code>1e-4</code> (ResNet) and <code>5e-5</code> (ViT).
+              </li>
+              <li>
+                <strong>Loss Function:</strong> <code>BCEWithLogitsLoss</code>,
+                treating each genre as an independent binary classification.
+              </li>
+              <li>
+                <strong>Thresholding:</strong> A custom threshold of
+                <strong>0.35</strong> was applied to account for the skewed
+                genre distribution, prioritizing the recall of less frequent
+                genres.
+              </li>
+            </ul>
+          </div>
+
+          <div class="content-box">
+            <h3>4.3 Baseline Model Implementation</h3>
+            <div class="model-card">
+              <h4 style="margin: 0px">ResNet50 (CNN) Implementation</h4>
+              <pre><code class="language-python">
+class CNNClassifier(nn.Module):
+    def __init__(self, num_classes):
+        super(CNNClassifier, self).__init__()
+        # Load pre-trained ResNet50 weights
+        self.resnet = models.resnet50(weights=models.ResNet50_Weights.IMAGENET1K_V1)
+        # Replace the final fully connected layer for multi-label classification
+        self.resnet.fc = nn.Linear(self.resnet.fc.in_features, num_classes)
+
+    def forward(self, x):
+        return self.resnet(x)
+
+# --- MAIN EXECUTION ---
+if __name__ == "__main__":
+    print(">>> Loading metadata from mmimdb_metadata.csv...")
+    df = pd.read_csv("mmimdb_metadata.csv")
+    
+    # Process genre labels using MultiLabelBinarizer
+    df['genres'] = df['genres'].apply(lambda x: x.split("|") if isinstance(x, str) else [])
+    mlb = MultiLabelBinarizer()
+    df['labels_binary'] = list(mlb.fit_transform(df['genres']))
+    num_classes = len(mlb.classes_)
+
+    # Split dataset into training and validation sets
+    train_df, temp_df = train_test_split(df, test_size=0.2, random_state=42)
+    val_df, _ = train_test_split(temp_df, test_size=0.5, random_state=42)
+
+    # Image transformations: Resize, Convert to Tensor, and Normalize
+    transform = transforms.Compose([
+        transforms.Resize((224, 224)),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+    ])
+
+    # Initialize DataLoaders
+    train_loader = DataLoader(ImageDataset(train_df, transform), batch_size=BATCH_SIZE, shuffle=True)
+    val_loader = DataLoader(ImageDataset(val_df, transform), batch_size=BATCH_SIZE, shuffle=False)
+
+    # Initialize Model, Optimizer, and Loss Function
+    model = CNNClassifier(num_classes).to(DEVICE)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=LR)
+    criterion = nn.BCEWithLogitsLoss()
+
+    print(f">>> Training CNN Baseline (ResNet50) on {DEVICE}...")
+    for epoch in range(EPOCHS):
+        # --- TRAINING PHASE ---
+        model.train()
+        train_loss = 0
+        for images, labels in tqdm(train_loader, desc=f"Epoch {epoch+1}"):
+            images, labels = images.to(DEVICE), labels.to(DEVICE)
+            
+            optimizer.zero_grad()
+            logits = model(images)
+            loss = criterion(logits, labels)
+            loss.backward()
+            optimizer.step()
+            
+            train_loss += loss.item()
+
+        # --- VALIDATION PHASE ---
+        model.eval()
+        all_labels, all_preds = [], []
+        with torch.no_grad():
+            for imgs, lbls in val_loader:
+                logits = model(imgs.to(DEVICE))
+                all_labels.append(lbls.numpy())
+                # Using a 0.35 threshold for multi-label prediction
+                preds = (torch.sigmoid(logits) > 0.35).cpu().numpy()
+                all_preds.append(preds)
+        
+        # Calculate Micro-F1 Score
+        f1 = f1_score(np.vstack(all_labels), np.vstack(all_preds), average='micro', zero_division=0)
+        print(f"Epoch {epoch+1} | Train Loss: {train_loss/len(train_loader):.4f} | Val Micro-F1: {f1:.4f}")
+    
+    # Save the unimodal baseline model
+    torch.save(model.state_dict(), "image_only_cnn_model.pth")
+    print(">>> Model weights saved to image_only_cnn_model.pth")
+                </code></pre>
+            </div>
+
+            <div class="model-card">
+              <h4 style="margin: 0px">ViT-Base (Vision Transformer) Implementation</h4>
+              <pre><code class="language-python">
+class ViTClassifier(nn.Module):
+    def __init__(self, num_classes):
+        super(ViTClassifier, self).__init__()
+        self.vit = ViTModel.from_pretrained("google/vit-base-patch16-224-in21k")
+        self.classifier = nn.Linear(768, num_classes)
+
+    def forward(self, x):
+        outputs = self.vit(pixel_values=x)
+        return self.classifier(outputs.last_hidden_state[:, 0, :])
+
+if __name__ == "__main__":
+    print(">>> Loading Data for ViT...")
+    df = pd.read_csv("mmimdb_metadata.csv")
+    df['genres'] = df['genres'].apply(lambda x: x.split("|") if isinstance(x, str) else [])
+    mlb = MultiLabelBinarizer()
+    df['labels_binary'] = list(mlb.fit_transform(df['genres']))
+    num_classes = len(mlb.classes_)
+
+    train_df, temp_df = train_test_split(df, test_size=0.2, random_state=42)
+    val_df, _ = train_test_split(temp_df, test_size=0.5, random_state=42)
+
+    processor = ViTImageProcessor.from_pretrained("google/vit-base-patch16-224-in21k")
+    train_loader = DataLoader(ViTDataset(train_df, processor), batch_size=BATCH_SIZE, shuffle=True)
+    val_loader = DataLoader(ViTDataset(val_df, processor), batch_size=BATCH_SIZE, shuffle=False)
+
+    model = ViTClassifier(num_classes).to(DEVICE)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=LR)
+    criterion = nn.BCEWithLogitsLoss()
+
+    print(f">>> Training ViT (Transformer) on {DEVICE}...")
+    for epoch in range(EPOCHS):
+        model.train()
+        train_loss = 0
+        for pixels, labels in tqdm(train_loader, desc=f"Epoch {epoch+1}"):
+            pixels, labels = pixels.to(DEVICE), labels.to(DEVICE)
+            optimizer.zero_grad()
+            loss = criterion(model(pixels), labels)
+            loss.backward()
+            optimizer.step()
+            train_loss += loss.item()
+
+        model.eval()
+        all_labels, all_preds = [], []
+        with torch.no_grad():
+            for px, lbls in val_loader:
+                logits = model(px.to(DEVICE))
+                all_labels.append(lbls.numpy())
+                all_preds.append((torch.sigmoid(logits) > 0.35).cpu().numpy())
+        
+        f1 = f1_score(np.vstack(all_labels), np.vstack(all_preds), average='micro', zero_division=0)
+        print(f"Epoch {epoch+1} | Loss: {train_loss/len(train_loader):.4f} | Val Micro-F1: {f1:.4f}")
+
+    torch.save(model.state_dict(), "image_only_vit_model.pth")
+                </code></pre>
+          </div>
+
+          <div class="content-box">
+            <h3>4.4 Experimental Results & Performance Analysis</h3>
+
+            <div class="table-responsive">
+              <table class="results-table">
+                <thead>
+                  <tr>
+                    <th>Metric</th>
+                    <th>ResNet50 (CNN)</th>
+                    <th>ViT-Base (Transformer)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Best Val Micro-F1</strong></td>
+                    <td>0.5137 (Epoch 3)</td>
+                    <td>
+                      <span class="highlight-text">0.5304 (Epoch 3)</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>Final Training Loss</strong></td>
+                    <td>0.0189</td>
+                    <td>0.0175</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Avg. Time per Epoch</strong></td>
+                    <td>~85 seconds</td>
+                    <td>~208 seconds</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h4>Observations:</h4>
+            <div class="observation-box">
+              <p>
+                <strong>1. ViT Superiority:</strong> The Vision Transformer
+                achieved a higher Micro-F1 score, suggesting that the global
+                context captured by self-attention is more effective for
+                recognizing complex movie genres than local convolutional
+                filters.
+              </p>
+              <p>
+                <strong>2. Overfitting Trend:</strong> Both models reached peak
+                performance early (Epoch 3). Despite the training loss
+                continuing to drop, validation performance plateaued, indicating
+                that <strong>visual features alone</strong> are insufficient for
+                generalization due to the artistic ambiguity of posters.
+              </p>
+              <p>
+                <strong>3. Computational Trade-off:</strong> ViT required
+                significantly more training time (~2.4x increase) compared to
+                ResNet50, representing a trade-off between accuracy and
+                overhead.
+              </p>
+            </div>
+          </div>
+
+          <div class="content-box conclusion-highlight">
+            <h3>4.5 Conclusion for Visual Branch</h3>
+            <p>
+              Experimental data confirms that <strong>ViT-Base</strong> is the
+              more powerful visual encoder for this task. Consequently, we have
+              selected the ViT architecture as the primary visual backbone for
+              our final <strong>Multimodal Fusion Model</strong>.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="text-baseline">
+        <div class="container">
+            <h2 class="section-title">5. Text-only Baseline Models</h2>
+
+            <p class="intro-text">
+            Movie plot summaries in the MMIMDb dataset vary significantly in length and narrative complexity. 
+            We evaluated two distinct approaches to process this textual information: a sequential Recurrent Neural Network (RNN) 
+            and an attention-based Transformer model.
+            </p>
+
+            <div class="content-box">
+            <h3>5.1 Architectural Selection: Bi-LSTM vs. DistilBERT</h3>
+            <div class="grid-two-col">
+                <div class="model-card">
+                <h4>Bidirectional LSTM (RNN)</h4>
+                <p>
+                    Processes text in both forward and backward directions to capture sequential dependencies. 
+                    We implemented a <strong>custom SimpleTokenizer</strong> with a vocabulary of 20,000 words 
+                    and 100-dimensional embeddings.
+                </p>
+                </div>
+                <div class="model-card">
+                <h4>DistilBERT (Transformer)</h4>
+                <p>
+                    A lighter, faster version of BERT that utilizes <strong>Self-Attention</strong> to understand 
+                    relationships between all words simultaneously. This allows for a deeper grasp of semantic 
+                    context compared to sequential processing.
+                </p>
+                </div>
+            </div>
+            
+            </div>
+
+            <div class="content-box">
+            <h3>5.1.1 Text Baseline Implementation (Source Code)</h3>
+            
+            <div class="code-implementation-block" style="margin-bottom: 25px;">
+                <h4><i class="fas fa-file-code" style="color: #f39c12; margin-right: 10px;"></i>Bi-LSTM Classifier (RNN)</h4>
+                <pre><code class="language-python">
+        class LSTMClassifier(nn.Module):
+            def __init__(self, vocab_size, embed_dim, hidden_dim, num_classes):
+                super(LSTMClassifier, self).__init__()
+                self.embedding = nn.Embedding(vocab_size, embed_dim)
+                # Bidirectional LSTM captures context from both directions
+                self.lstm = nn.LSTM(embed_dim, hidden_dim, batch_first=True, bidirectional=True)
+                # Final layer input is hidden_dim * 2 due to bidirectionality
+                self.fc = nn.Linear(hidden_dim * 2, num_classes)
+                self.dropout = nn.Dropout(0.3)
+
+            def forward(self, x):
+                x = self.embedding(x)
+                _, (hidden, _) = self.lstm(x)
+                # Concatenate final hidden states from forward and backward passes
+                cat_hidden = torch.cat((hidden[-2,:,:], hidden[-1,:,:]), dim=1)
+                return self.fc(self.dropout(cat_hidden))
+                </code></pre>
+            </div>
+
+            <div class="code-implementation-block">
+                <h4><i class="fas fa-file-code" style="color: #9b59b6; margin-right: 10px;"></i>DistilBERT Classifier (Transformer)</h4>
+                <pre><code class="language-python">
+        class TextClassifier(nn.Module):
+            def __init__(self, num_classes):
+                super(TextClassifier, self).__init__()
+                self.distilbert = AutoModel.from_pretrained("distilbert-base-uncased")
+                self.classifier = nn.Sequential(
+                    nn.Linear(768, 512),
+                    nn.ReLU(),
+                    nn.Dropout(0.2),
+                    nn.Linear(512, num_classes)
+                )
+
+            def forward(self, input_ids, attention_mask):
+                out = self.distilbert(input_ids=input_ids, attention_mask=attention_mask)
+                # Extract the [CLS] token (index 0) for classification
+                cls_feat = out.last_hidden_state[:, 0, :]
+                return self.classifier(cls_feat)
+                </code></pre>
+            </div>
+            </div>
+
+            <div class="content-box">
+            <h3>5.2 Training Methodology</h3>
+            <ul>
+                <li><strong>Bi-LSTM:</strong> Trained with Adam (LR: <code>1e-3</code>), hidden dimension 256, and dropout 0.3.</li>
+                <li><strong>DistilBERT:</strong> Trained with AdamW (LR: <code>5e-5</code>) to preserve pre-trained knowledge.</li>
+                <li><strong>Common:</strong> 10 epochs, <code>BCEWithLogitsLoss</code>, and <code>max_length=128</code>.</li>
+            </ul>
+            </div>
+
+            <div class="content-box">
+            <h3>5.3 Experimental Results & Performance Analysis</h3>
+            <table class="results-table">
+                <thead>
+                <tr>
+                    <th>Metric</th>
+                    <th>Bi-LSTM (RNN)</th>
+                    <th>DistilBERT (Transformer)</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><strong>Best Val Micro-F1</strong></td>
+                    <td>0.4637 (Epoch 6)</td>
+                    <td><span class="highlight-text">0.6473 (Epoch 3)</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Final Training Loss</strong></td>
+                    <td>0.1053</td>
+                    <td>0.0193</td>
+                </tr>
+                <tr>
+                    <td><strong>Training Speed</strong></td>
+                    <td>~40 batches/sec</td>
+                    <td>~6 batches/sec</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <h4>Observations:</h4>
+            <div class="observation-box">
+                <p><strong>1. Transformer Superiority:</strong> DistilBERT significantly outperformed Bi-LSTM (0.6473 vs 0.4637), proving that pre-trained attention models capture semantic nuances (like "thriller" vs "horror") much better than scratch-trained RNNs.</p>
+                <p><strong>2. Text vs. Image:</strong> The best text model (0.6473) is superior to the best image model (0.5304). This suggests movie plots contain more explicit discriminative information for genre classification than posters.</p>
+                <p><strong>3. Efficiency:</strong> While DistilBERT is computationally heavier (~6 batches/s), it converges much faster, reaching peak F1 by Epoch 3.</p>
+            </div>
+            </div>
+
+            <div class="content-box conclusion-highlight">
+            <h3>5.4 Conclusion for Textual Branch</h3>
+            <p>
+                <strong>DistilBERT</strong> is clearly the superior textual encoder. Its rich semantic embeddings make it the ideal 
+                textual backbone for our final <strong>Multimodal Fusion architecture</strong>.
+            </p>
+            </div>
+        </div>
+        </section>
     </div>
 
     <footer>
