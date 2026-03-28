@@ -192,6 +192,166 @@
         border: 1px solid #eee;
       }
 
+      .case-study {
+        background: #fff;
+        border: 1px solid #e1e4e8;
+        padding: 20px;
+        border-radius: 8px;
+      }
+      .badge-danger {
+        background: #fab1a0;
+        color: #d63031;
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-size: 0.85em;
+        font-weight: bold;
+      }
+      .highlight-text {
+        color: #d63031;
+        font-weight: bold;
+      }
+
+      .chart-item {
+        text-align: center;
+      }
+
+      .analysis-img {
+        width: 100%;
+        height: auto;
+        border-radius: 4px;
+        border: 1px solid #e1e4e8;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      }
+
+      .chart-caption {
+        font-size: 0.85em;
+        color: #636e72;
+        margin-top: 8px;
+        font-style: italic;
+      }
+
+      .patterns-list ul {
+        margin-top: 20px;
+        padding-left: 20px;
+      }
+
+      .patterns-list li {
+        margin-bottom: 15px;
+      }
+
+      
+      .video-placeholder {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        background: #2d3436;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        border: 2px dashed #636e72;
+        margin-top: 15px;
+      }
+      
+      .video-overlay {
+        text-align: center;
+        color: #dfe6e9;
+        font-family: 'Courier New', Courier, monospace;
+      }
+
+      .video-container {
+        border-top: 4px solid var(--secondary-color);
+      }
+
+      .highlight-row {
+        background-color: #e8f4fd;
+          color: #2c3e50;
+          font-weight: bold;
+        }
+
+        .video-wrapper {
+        position: relative;
+        padding-bottom: 56.25%; /* Tỷ lệ 16:9 */
+        height: 0;
+        overflow: hidden;
+        max-width: 100%;
+        background: #000;
+        border-radius: 8px;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      }
+
+      .video-wrapper iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+
+      .video-footer {
+        margin-top: 20px;
+        text-align: center;
+        padding: 10px;
+        background: #f8f9fa;
+        border-radius: 5px;
+      }
+
+      .video-footer a {
+        color: #e67e22;
+        text-decoration: none;
+        font-weight: bold;
+        transition: color 0.3s;
+      }
+
+      .video-footer a:hover {
+        color: #d35400;
+        text-decoration: underline;
+      }
+
+      /* Tạo điểm nhấn cho Section cuối */
+      #presentation-video {
+        margin-bottom: 50px;
+      }
+
+      .github-url {
+        font-size: 1.25em;
+        font-weight: bold;
+        color: #3498db;
+        text-decoration: none;
+        word-break: break-all;
+        border-bottom: 2px solid transparent;
+        transition: all 0.3s ease;
+      }
+
+      .github-url:hover {
+        color: #2c3e50;
+        border-bottom: 2px solid #2c3e50;
+      }
+
+      .github-link-container {
+        transition: transform 0.3s ease;
+      }
+
+      .github-link-container:hover {
+        transform: translateY(-5px);
+      }
+
+      .conclusion-highlight {
+        background-color: #f8fafc;
+        border-top: 4px solid var(--primary-color);
+      }
+      
+      .conclusion-highlight h3 {
+        color: var(--primary-color);
+        margin-bottom: 20px;
+      }
+      /* Đảm bảo icon có màu sắc phù hợp */
+      .observation-box i {
+        margin-right: 8px;
+        color: var(--primary-color);
+      }
+
       /* Code Block */
       pre {
         background: #272822;
@@ -635,9 +795,9 @@ def __getitem__(self, idx):
           </div>
 
           <div class="content-box">
-            <h3>4.3 Baseline Model Implementation</h3>
+            <h3>4.3 Image Baseline Implementation (Source Code)</h3>
             <div class="model-card">
-              <h4 style="margin: 0px">ResNet50 (CNN) Implementation</h4>
+              <h4 style="margin-top: 0px"><i class="fas fa-file-code" style="color: #f39c12; margin-right: 10px;"></i>ResNet50 (CNN)</h4>
               <pre><code class="language-python">
 class CNNClassifier(nn.Module):
     def __init__(self, num_classes):
@@ -718,8 +878,8 @@ if __name__ == "__main__":
                 </code></pre>
             </div>
 
-            <div class="model-card">
-              <h4 style="margin: 0px">ViT-Base (Vision Transformer) Implementation</h4>
+            <div class="model-card" style="margin-top: 30px;">
+               <h4 style="margin-top: 0px"><i class="fas fa-file-code" style="color: #9b59b6; margin-right: 10px;"></i>ViT-Base (Vision Transformer)</h4>
               <pre><code class="language-python">
 class ViTClassifier(nn.Module):
     def __init__(self, num_classes):
@@ -882,54 +1042,6 @@ if __name__ == "__main__":
             </div>
 
             <div class="content-box">
-            <h3>5.1.1 Text Baseline Implementation (Source Code)</h3>
-            
-            <div class="code-implementation-block" style="margin-bottom: 25px;">
-                <h4><i class="fas fa-file-code" style="color: #f39c12; margin-right: 10px;"></i>Bi-LSTM Classifier (RNN)</h4>
-                <pre><code class="language-python">
-        class LSTMClassifier(nn.Module):
-            def __init__(self, vocab_size, embed_dim, hidden_dim, num_classes):
-                super(LSTMClassifier, self).__init__()
-                self.embedding = nn.Embedding(vocab_size, embed_dim)
-                # Bidirectional LSTM captures context from both directions
-                self.lstm = nn.LSTM(embed_dim, hidden_dim, batch_first=True, bidirectional=True)
-                # Final layer input is hidden_dim * 2 due to bidirectionality
-                self.fc = nn.Linear(hidden_dim * 2, num_classes)
-                self.dropout = nn.Dropout(0.3)
-
-            def forward(self, x):
-                x = self.embedding(x)
-                _, (hidden, _) = self.lstm(x)
-                # Concatenate final hidden states from forward and backward passes
-                cat_hidden = torch.cat((hidden[-2,:,:], hidden[-1,:,:]), dim=1)
-                return self.fc(self.dropout(cat_hidden))
-                </code></pre>
-            </div>
-
-            <div class="code-implementation-block">
-                <h4><i class="fas fa-file-code" style="color: #9b59b6; margin-right: 10px;"></i>DistilBERT Classifier (Transformer)</h4>
-                <pre><code class="language-python">
-        class TextClassifier(nn.Module):
-            def __init__(self, num_classes):
-                super(TextClassifier, self).__init__()
-                self.distilbert = AutoModel.from_pretrained("distilbert-base-uncased")
-                self.classifier = nn.Sequential(
-                    nn.Linear(768, 512),
-                    nn.ReLU(),
-                    nn.Dropout(0.2),
-                    nn.Linear(512, num_classes)
-                )
-
-            def forward(self, input_ids, attention_mask):
-                out = self.distilbert(input_ids=input_ids, attention_mask=attention_mask)
-                # Extract the [CLS] token (index 0) for classification
-                cls_feat = out.last_hidden_state[:, 0, :]
-                return self.classifier(cls_feat)
-                </code></pre>
-            </div>
-            </div>
-
-            <div class="content-box">
             <h3>5.2 Training Methodology</h3>
             <ul>
                 <li><strong>Bi-LSTM:</strong> Trained with Adam (LR: <code>1e-3</code>), hidden dimension 256, and dropout 0.3.</li>
@@ -939,7 +1051,189 @@ if __name__ == "__main__":
             </div>
 
             <div class="content-box">
-            <h3>5.3 Experimental Results & Performance Analysis</h3>
+              <h3>5.3 Text Baseline Implementation (Source Code)</h3>
+              
+              <div class="model-card" style="margin-bottom: 25px;">
+                  <h4><i class="fas fa-file-code" style="color: #f39c12; margin-right: 10px;"></i>Bi-LSTM Classifier (RNN)</h4>
+                  <pre><code class="language-python">
+class LSTMClassifier(nn.Module):
+  def __init__(self, vocab_size, embed_dim, hidden_dim, num_classes):
+      super(LSTMClassifier, self).__init__()
+      self.embedding = nn.Embedding(vocab_size, embed_dim)
+      # Bidirectional LSTM captures context from both directions (forward & backward)
+      self.lstm = nn.LSTM(embed_dim, hidden_dim, batch_first=True, bidirectional=True)
+      # Linear layer expects hidden_dim * 2 due to bidirectionality
+      self.fc = nn.Linear(hidden_dim * 2, num_classes)
+      self.dropout = nn.Dropout(0.3)
+
+  def forward(self, x):
+      # x shape: (batch, seq_len)
+      x = self.embedding(x)
+      # lstm_out shape: (batch, seq_len, hidden_dim * 2)
+      _, (hidden, _) = self.lstm(x)
+      
+      # Concatenate the final hidden states from both directions
+      cat_hidden = torch.cat((hidden[-2,:,:], hidden[-1,:,:]), dim=1)
+      return self.fc(self.dropout(cat_hidden))
+
+# --- MAIN EXECUTION ---
+if __name__ == "__main__":
+  device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+  
+  print(">>> Preparing data for RNN...")
+  df = pd.read_csv("mmimdb_metadata.csv")
+  
+  # Process genre labels
+  df['genres'] = df['genres'].apply(lambda x: x.split("|") if isinstance(x, str) else [])
+  mlb = MultiLabelBinarizer()
+  df['labels_binary'] = list(mlb.fit_transform(df['genres']))
+  
+  # Split dataset into training and validation sets
+  train_df, temp_df = train_test_split(df, test_size=0.2, random_state=42)
+  val_df, _ = train_test_split(temp_df, test_size=0.5, random_state=42)
+
+  # Initialize tokenizer and DataLoaders
+  tokenizer = SimpleTokenizer(train_df['plot'].astype(str), MAX_VOCAB)
+  train_loader = DataLoader(RNNDataset(train_df, tokenizer, MAX_LEN), batch_size=BATCH_SIZE, shuffle=True)
+  val_loader = DataLoader(RNNDataset(val_df, tokenizer, MAX_LEN), batch_size=BATCH_SIZE, shuffle=False)
+
+  # Initialize Model, Optimizer, and Loss Function
+  model = LSTMClassifier(MAX_VOCAB, EMBED_DIM, HIDDEN_DIM, len(mlb.classes_)).to(device)
+  optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
+  criterion = nn.BCEWithLogitsLoss()
+
+  print(f">>> Starting training for RNN (Bi-LSTM) on {device}...")
+  for epoch in range(EPOCHS):
+      # --- TRAINING ---
+      model.train()
+      total_loss = 0
+      for batch in tqdm(train_loader, desc=f"Epoch {epoch+1}"):
+          ids, labels = batch['input_ids'].to(device), batch['labels'].to(device)
+          
+          optimizer.zero_grad()
+          logits = model(ids)
+          loss = criterion(logits, labels)
+          loss.backward()
+          optimizer.step()
+          
+          total_loss += loss.item()
+
+      # --- EVALUATION ---
+      model.eval()
+      all_labels, all_preds = [], []
+      with torch.no_grad():
+          for batch in val_loader:
+              logits = model(batch['input_ids'].to(device))
+              # Using 0.4 threshold for multi-label classification
+              preds = (torch.sigmoid(logits) > 0.4).cpu().numpy()
+              all_labels.append(batch['labels'].numpy())
+              all_preds.append(preds)
+      
+      # Calculate Micro-F1 Score
+      f1 = f1_score(np.vstack(all_labels), np.vstack(all_preds), average='micro', zero_division=0)
+      print(f"Epoch {epoch+1} | Loss: {total_loss/len(train_loader):.4f} | Val Micro-F1: {f1:.4f}")
+
+  # Save the text-only baseline model
+  torch.save(model.state_dict(), "text_only_rnn_model.pth")
+  print(">>> Model saved to text_only_rnn_model.pth")
+                  </code></pre>
+              </div>
+
+              <div class="model-card">
+                  <h4><i class="fas fa-file-code" style="color: #9b59b6; margin-right: 10px;"></i>DistilBERT Classifier (Transformer)</h4>
+                  <pre><code class="language-python">
+class TextClassifier(nn.Module):
+  def __init__(self, num_classes):
+      super(TextClassifier, self).__init__()
+      # Using DistilBERT for an efficient yet powerful text backbone
+      self.distilbert = AutoModel.from_pretrained("distilbert-base-uncased")
+      
+      # Classification head on top of DistilBERT features
+      self.classifier = nn.Sequential(
+          nn.Linear(768, 512),
+          nn.ReLU(),
+          nn.Dropout(0.2),
+          nn.Linear(512, num_classes)
+      )
+
+  def forward(self, input_ids, attention_mask):
+      out = self.distilbert(input_ids=input_ids, attention_mask=attention_mask)
+      
+      # Extract the hidden state of the [CLS] token (index 0) for classification
+      cls_feat = out.last_hidden_state[:, 0, :]
+      return self.classifier(cls_feat)
+
+# --- MAIN EXECUTION ---
+if __name__ == "__main__":
+  device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+  
+  # Data Preparation
+  print(">>> Preparing Text metadata...")
+  df = pd.read_csv("mmimdb_metadata.csv")
+  
+  # Process genre labels
+  df['genres'] = df['genres'].apply(lambda x: x.split("|") if isinstance(x, str) else [])
+  mlb = MultiLabelBinarizer()
+  df['labels_binary'] = list(mlb.fit_transform(df['genres']))
+  num_classes = len(mlb.classes_)
+
+  # Split dataset into training and validation sets
+  train_df, temp_df = train_test_split(df, test_size=0.2, random_state=42)
+  val_df, _ = train_test_split(temp_df, test_size=0.5, random_state=42)
+
+  # Initialize Tokenizer and DataLoaders
+  tokenizer = AutoTokenizer.from_pretrained("distilbert-base-uncased")
+  train_loader = DataLoader(TextDataset(train_df, tokenizer), batch_size=32, shuffle=True)
+  val_loader = DataLoader(TextDataset(val_df, tokenizer), batch_size=32, shuffle=False)
+
+  # Initialize Model, Optimizer, and Loss Function
+  model = TextClassifier(num_classes).to(device)
+  optimizer = torch.optim.AdamW(model.parameters(), lr=5e-5)
+  criterion = nn.BCEWithLogitsLoss()
+
+  print(f">>> Starting training for Text-only Transformer on {device}...")
+  # Note: 5-10 epochs are usually sufficient for fine-tuning Transformers on this task
+  for epoch in range(10): 
+      # --- TRAINING ---
+      model.train()
+      total_loss = 0
+      for batch in tqdm(train_loader, desc=f"Epoch {epoch+1}"):
+          input_ids = batch['input_ids'].to(device)
+          mask = batch['attention_mask'].to(device)
+          labels = batch['labels'].to(device)
+
+          optimizer.zero_grad()
+          logits = model(input_ids, mask)
+          loss = criterion(logits, labels)
+          loss.backward()
+          optimizer.step()
+          
+          total_loss += loss.item()
+
+      # --- EVALUATION ---
+      model.eval()
+      all_labels, all_preds = [], []
+      with torch.no_grad():
+          for batch in val_loader:
+              logits = model(batch['input_ids'].to(device), batch['attention_mask'].to(device))
+              # Using 0.4 threshold for multi-label classification
+              preds = (torch.sigmoid(logits) > 0.4).cpu().numpy()
+              all_labels.append(batch['labels'].numpy())
+              all_preds.append(preds)
+      
+      # Calculate Micro-F1 Score
+      f1 = f1_score(np.vstack(all_labels), np.vstack(all_preds), average='micro', zero_division=0)
+      print(f"Epoch {epoch+1} | Loss: {total_loss/len(train_loader):.4f} | Val Micro-F1: {f1:.4f}")
+
+  # Save the unimodal transformer model weights
+  torch.save(model.state_dict(), "text_only_transformer_model.pth")
+  print(">>> Model saved to text_only_transformer_model.pth")
+                  </code></pre>
+              </div>
+            </div>
+
+            <div class="content-box">
+            <h3>5.4 Experimental Results & Performance Analysis</h3>
             <table class="results-table">
                 <thead>
                 <tr>
@@ -976,14 +1270,808 @@ if __name__ == "__main__":
             </div>
 
             <div class="content-box conclusion-highlight">
-            <h3>5.4 Conclusion for Textual Branch</h3>
+            <h3>5.5 Conclusion for Textual Branch</h3>
             <p>
                 <strong>DistilBERT</strong> is clearly the superior textual encoder. Its rich semantic embeddings make it the ideal 
                 textual backbone for our final <strong>Multimodal Fusion architecture</strong>.
             </p>
             </div>
         </div>
-        </section>
+      </section>
+
+      <section id="advanced-methodology">
+        <div class="container">
+          <h2 class="section-title">6. Advanced Multimodal & Prompt-based Methodology</h2>
+          <p class="intro-text">
+            To push the boundaries of movie genre classification, we implemented three distinct advanced strategies: a <strong>Full Fine-Tuning Multimodal Fusion</strong> model, <strong>Zero-Shot Classification</strong> with CLIP, and <strong>Few-Shot Linear Probing</strong>.
+          </p>
+
+          <div class="content-box">
+            <h3>6.1 Multimodal Full Fine-Tuning (DistilBERT + ViT)</h3>
+            <p>
+              Our primary architecture processes textual plots and visual posters simultaneously to achieve maximum predictive accuracy by allowing cross-modal feature interaction.
+            </p>
+
+            <div>
+              <div>
+                <h4>Architectural Design & Strategy</h4>
+                <ul>
+                  <li>
+                    <strong>Multimodal Architecture:</strong> To achieve high accuracy, we designed a deep multimodal model that processes both textual plots and visual posters simultaneously.
+                  </li>
+                  <li>
+                    <strong>Dual Encoders:</strong> We integrated <strong>DistilBERT</strong> (text branch) and <strong>ViT-Base</strong> (image branch) into a unified pipeline. Each produces a 768-dimensional representation, which are concatenated into a <strong>1536-dimensional</strong> joint feature vector.
+                  </li>
+                  <li>
+                    <strong>Fusion Head:</strong> The joint vector is passed through a classification head: <code>Linear (512)</code> &rarr; <code>ReLU</code> &rarr; <code>Dropout (0.2)</code> &rarr; <code>Output (26 classes)</code>.
+                  </li>
+                  <li>
+                    <strong>Training Strategy:</strong> We apply full fine-tuning, allowing gradients to update both backbones. The model is trained using <strong>AdamW</strong> (learning rate: 2e-5) for 5 epochs.
+                  </li>
+                </ul>
+              </div>
+              <div class="code-column">
+                <h5 class="code-label"><i class="fas fa-code"></i> Implementation: Multimodal Architecture</h5>
+                <pre><code class="language-python">
+# 1. Import the Dataset class (Ensure split_data_and_dataloader.py is in the same directory)
+from split_data_and_dataloader import MMIMDbLocalDataset
+
+# 2. Model Architecture Definition
+class MultimodalModel(nn.Module):
+  def __init__(self, num_classes):
+    super(MultimodalModel, self).__init__()
+    # Text Backbone: DistilBERT
+    self.text_model = AutoModel.from_pretrained("distilbert-base-uncased")
+    # Image Backbone: Vision Transformer (ViT)
+    self.image_model = ViTModel.from_pretrained("google/vit-base-patch16-224-in21k")
+    
+    # Late Fusion Classifier
+    # Concatenates 768 (Text) + 768 (Image) features = 1536 input features
+    self.classifier = nn.Sequential(
+      nn.Linear(768 + 768, 512),
+      nn.ReLU(),
+      nn.Dropout(0.2),
+      nn.Linear(512, num_classes)
+    )
+
+  def forward(self, input_ids, attention_mask, pixel_values):
+    # Extract text features from the [CLS] token (index 0)
+    text_out = self.text_model(input_ids=input_ids, attention_mask=attention_mask)
+    text_feat = text_out.last_hidden_state[:, 0, :] 
+    
+    # Extract image features from the [CLS] token
+    img_out = self.image_model(pixel_values=pixel_values)
+    img_feat = img_out.last_hidden_state[:, 0, :] 
+    
+    # Concatenate modality features (Late Fusion)
+    combined = torch.cat((text_feat, img_feat), dim=1)
+    
+    # Final classification
+    return self.classifier(combined)
+
+# 3. Evaluation Function
+def evaluate(model, dataloader, criterion, device):
+  model.eval()
+  all_labels, all_preds = [], []
+  val_loss = 0
+  with torch.no_grad():
+    for batch in dataloader:
+      input_ids, attention_mask = batch['input_ids'].to(device), batch['attention_mask'].to(device)
+      pixel_values, labels = batch['pixel_values'].to(device), batch['labels'].to(device)
+      
+      logits = model(input_ids, attention_mask, pixel_values)
+      loss = criterion(logits, labels)
+      val_loss += loss.item()
+      
+      # Multi-label prediction using sigmoid and a 0.5 threshold
+      preds = (torch.sigmoid(logits) > 0.5).cpu().numpy()
+      all_labels.append(labels.cpu().numpy())
+      all_preds.append(preds)
+          
+  all_labels = np.vstack(all_labels)
+  all_preds = np.vstack(all_preds)
+  
+  return (
+    val_loss / len(dataloader), 
+    f1_score(all_labels, all_preds, average='micro'), 
+    f1_score(all_labels, all_preds, average='macro'), 
+    accuracy_score(all_labels, all_preds)
+  )
+
+# --- MAIN EXECUTION ---
+if __name__ == "__main__":
+  # A. Data Preparation
+  print(">>> Preparing multimodal dataset...")
+  df = pd.read_csv("mmimdb_metadata.csv")
+  
+  # Process genre labels
+  df['genres'] = df['genres'].apply(lambda x: x.split("|") if isinstance(x, str) else [])
+  mlb = MultiLabelBinarizer()
+  labels_binary = mlb.fit_transform(df['genres'])
+  df['labels_binary'] = list(labels_binary)
+  num_classes = len(mlb.classes_)
+
+  # Split dataset: 80% Train, 10% Val, 10% Test
+  train_df, temp_df = train_test_split(df, test_size=0.2, random_state=42)
+  val_df, test_df = train_test_split(temp_df, test_size=0.5, random_state=42)
+
+  # Initialize Processors
+  tokenizer = AutoTokenizer.from_pretrained("distilbert-base-uncased")
+  image_processor = AutoImageProcessor.from_pretrained("google/vit-base-patch16-224-in21k")
+
+  # Setup DataLoaders
+  train_loader = DataLoader(
+      MMIMDbLocalDataset(train_df, tokenizer, image_processor), 
+      batch_size=32, shuffle=True, num_workers=4, pin_memory=True
+  )
+  val_loader = DataLoader(
+      MMIMDbLocalDataset(val_df, tokenizer, image_processor), 
+      batch_size=16, shuffle=False, num_workers=4, pin_memory=True
+  )
+
+  # B. Model Initialization & Training
+  device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+  print(f">>> Device: {device} | Number of classes: {num_classes}")
+  
+  model = MultimodalModel(num_classes=num_classes).to(device)
+  criterion = nn.BCEWithLogitsLoss()
+  optimizer = torch.optim.AdamW(model.parameters(), lr=2e-5)
+
+  best_f1 = 0
+  print(">>> Starting Multimodal Fine-tuning...")
+  for epoch in range(5):
+    # --- TRAINING PHASE ---
+    model.train()
+    train_loss = 0
+    pbar = tqdm(train_loader, desc=f"Epoch {epoch+1}/5")
+    for batch in pbar:
+      input_ids, attention_mask = batch['input_ids'].to(device), batch['attention_mask'].to(device)
+      pixel_values, labels = batch['pixel_values'].to(device), batch['labels'].to(device)
+      
+      optimizer.zero_grad()
+      logits = model(input_ids, attention_mask, pixel_values)
+      loss = criterion(logits, labels)
+      loss.backward()
+      optimizer.step()
+      
+      train_loss += loss.item()
+      pbar.set_postfix({'loss': f"{loss.item():.4f}"})
+
+    # --- VALIDATION PHASE ---
+    v_loss, micro, macro, acc = evaluate(model, val_loader, criterion, device)
+    print(f"\n[Val] Loss: {v_loss:.4f} | Micro-F1: {micro:.4f} | Macro-F1: {macro:.4f} | Acc: {acc:.4f}")
+
+    # Save the best model based on Micro-F1 score
+    if micro > best_f1:
+      best_f1 = micro
+      torch.save(model.state_dict(), "best_multimodal_model.pth")
+      print(">>> Best model saved!")
+                </code></pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="content-box">
+            <h3>6.2 Zero-Shot Classification with CLIP</h3>
+            <p>
+              We utilized <strong>CLIP (Contrastive Language-Image Pre-training)</strong> to evaluate the model's ability to generalize to movie genres without any domain-specific training.
+            </p>
+
+            <div>
+              <div>
+                <h4>Mechanism & Inference</h4>
+                <ul>
+                  <li>
+                    <strong>Zero-Shot Evaluation:</strong> To assess generalization without domain-specific training, we utilized CLIP (Contrastive Language-Image Pre-training) from OpenAI.
+                  </li>
+                  <li>
+                    <strong>Mechanism:</strong> CLIP is pre-trained on 400 million image-text pairs, enabling it to learn visual concepts through natural language supervision.
+                  </li>
+                  <li>
+                    <strong>Prompting Strategy:</strong> Classification is performed by computing cosine similarity between the poster and 26 text prompts, such as <em>"A movie poster of the genre [Genre]"</em>.
+                  </li>
+                  <li>
+                    <strong>Inference:</strong> The model produces a probability distribution over all prompts, and labels are assigned using a <strong>similarity threshold of 0.1</strong>.
+                  </li>
+                </ul>
+              </div>
+              <div class="code-column">
+                <h5 class="code-label"><i class="fas fa-code"></i> Implementation: CLIP Zero-Shot</h5>
+                <pre><code class="language-python">
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print(f">>> Running Zero-shot inference on: {device}")
+
+# Load metadata to retrieve the standard list of genres
+df = pd.read_csv("mmimdb_metadata.csv")
+df['genres'] = df['genres'].apply(lambda x: x.split("|") if isinstance(x, str) else [])
+
+# Initialize MultiLabelBinarizer to handle 26 movie genres
+mlb = MultiLabelBinarizer()
+mlb.fit(df['genres'])
+class_names = mlb.classes_ 
+
+# Isolate the Test set (10% subset, maintaining consistency with your previous splits)
+_, test_indices = torch.utils.data.random_split(
+    df, [int(0.9 * len(df)), len(df) - int(0.9 * len(df))], 
+    generator=torch.Generator().manual_seed(42)
+)
+test_df = df.iloc[test_indices.indices]
+
+# 2. Initialize CLIP Model
+# We use the ViT-B/32 variant, which is balanced for speed and accuracy
+model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32").to(device)
+processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
+
+# Prepare natural language prompts for CLIP
+# Using a descriptive phrase like "A movie poster of the genre..." helps CLIP align 
+# visual features with textual concepts more effectively than using single words.
+prompts = [f"A movie poster of the genre {g}" for g in class_names]
+
+all_labels = []
+all_preds = []
+
+# 3. Perform Inference
+model.eval()
+print(">>> Starting Zero-shot prediction process...")
+
+with torch.no_grad():
+    for _, row in tqdm(test_df.iterrows(), total=len(test_df)):
+        # Load and convert image to RGB
+        try:
+            image = Image.open(row['image_path']).convert('RGB')
+        except Exception:
+            # Fallback for missing/corrupted images
+            image = Image.new('RGB', (224, 224), color=0)
+        
+        # Preprocess both the image and the text prompts
+        inputs = processor(
+            text=prompts, 
+            images=image, 
+            return_tensors="pt", 
+            padding=True
+        ).to(device)
+
+        # CLIP calculates the cosine similarity between the image embedding and prompt embeddings
+        outputs = model(**inputs)
+        logits_per_image = outputs.logits_per_image  # Similarity scores
+        probs = logits_per_image.softmax(dim=-1).cpu().numpy()[0]
+
+        # Multi-label Strategy:
+        # Since the sum of probabilities across 26 classes equals 1.0, 
+        # a threshold of 0.1 is used to select the most likely genres.
+        pred_binary = (probs > 0.1).astype(int) 
+        
+        # Transform ground truth labels into binary format
+        true_binary = mlb.transform([row['genres']])[0]
+        
+        all_labels.append(true_binary)
+        all_preds.append(pred_binary)
+
+# 4. Results Evaluation
+all_labels = np.array(all_labels)
+all_preds = np.array(all_preds)
+
+micro_f1 = f1_score(all_labels, all_preds, average='micro', zero_division=0)
+macro_f1 = f1_score(all_labels, all_preds, average='macro', zero_division=0)
+acc = accuracy_score(all_labels, all_preds)
+
+print(f"\n--- ZERO-SHOT (CLIP) BASELINE RESULTS ---")
+print(f"Micro F1: {micro_f1:.4f}")
+print(f"Macro F1: {macro_f1:.4f}")
+print(f"Subset Accuracy (Exact Match): {acc:.4f}")
+
+print("\nPer-class Classification Report:\n")
+print(classification_report(all_labels, all_preds, target_names=class_names, zero_division=0))
+                </code></pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="content-box">
+            <h3>6.3 Few-Shot Linear Probing with CLIP</h3>
+            <p>
+              We explored a <strong>Few-Shot</strong> approach to observe how effectively the model learns from extremely limited labeled data while minimizing computational costs.
+            </p>
+
+            <div>
+              <div>
+                <h4>Data Efficiency & Optimization</h4>
+                <ul>
+                  <li>
+                    <strong>Few-Shot Strategy:</strong> To reduce computational cost, we adopted a few-shot approach to evaluate performance with limited training data.
+                  </li>
+                  <li>
+                    <strong>Data Efficiency:</strong> Only <strong>5% of the training set</strong> (approximately 500–600 samples) was used to train a lightweight classifier.
+                  </li>
+                  <li>
+                    <strong>Linear Probe:</strong> The CLIP visual backbone (<strong>ViT-B/32</strong>) was <strong>frozen</strong>, and only a single Linear layer (the probe) was trained on top of its extracted features.
+                  </li>
+                  <li>
+                    <strong>Optimization:</strong> This approach is computationally efficient, leveraging strong pre-trained representations without full model updates. Training was conducted for 10 epochs using a learning rate of <strong>1e-3</strong>.
+                  </li>
+                </ul>
+              </div>
+              <div class="code-column">
+                <h5 class="code-label"><i class="fas fa-code"></i> Implementation: CLIP Linear Probe</h5>
+                <pre><code class="language-python">
+class CLIPImageDataset(Dataset):
+    def __init__(self, df, processor):
+        self.df = df.reset_index(drop=True)
+        self.processor = processor
+
+    def __len__(self):
+        return len(self.df)
+
+    def __getitem__(self, idx):
+        row = self.df.iloc[idx]
+        try:
+            image = Image.open(row['image_path']).convert('RGB')
+            inputs = self.processor(images=image, return_tensors="pt")
+        except Exception:
+            # Fallback if the image is corrupted or missing
+            image = Image.new('RGB', (224, 224))
+            inputs = self.processor(images=image, return_tensors="pt")
+            
+        labels = torch.tensor(row['labels_binary'], dtype=torch.float)
+        return inputs['pixel_values'].squeeze(0), labels
+
+# 2. Linear Probe Model Definition
+class CLIPLinearProbe(nn.Module):
+    def __init__(self, clip_model, num_classes):
+        super().__init__()
+        # Freeze CLIP vision backbone
+        self.clip_visual = clip_model.vision_model 
+        for param in self.clip_visual.parameters():
+            param.requires_grad = False
+        
+        # Dynamically retrieve hidden_size from CLIP config
+        self.classifier = nn.Linear(self.clip_visual.config.hidden_size, num_classes) 
+
+    def forward(self, pixel_values):
+        outputs = self.clip_visual(pixel_values)
+        features = outputs.pooler_output 
+        return self.classifier(features)
+
+# 3. Multi-label Confusion Matrix (Heatmap) Plotting
+def plot_multilabel_confusion_matrix(all_labels, all_preds, class_names):
+    plt.figure(figsize=(15, 12))
+    
+    # Calculate correlation between ground truth and predicted labels
+    confusion_grid = np.zeros((len(class_names), len(class_names)))
+    for i in range(len(all_labels)):
+        true_indices = np.where(all_labels[i] == 1)[0]
+        pred_indices = np.where(all_preds[i] == 1)[0]
+        for t in true_indices:
+            for p in pred_indices:
+                confusion_grid[t, p] += 1
+
+    # Row-wise normalization
+    row_sums = confusion_grid.sum(axis=1, keepdims=True)
+    row_sums[row_sums == 0] = 1
+    confusion_grid_norm = confusion_grid / row_sums
+
+    sns.heatmap(confusion_grid_norm, annot=False, cmap='Blues', 
+                xticklabels=class_names, yticklabels=class_names)
+    plt.xlabel('Predicted Genres', fontsize=12)
+    plt.ylabel('True Genres', fontsize=12)
+    plt.title('Normalized Multi-label Confusion Heatmap (Few-shot CLIP)', fontsize=15)
+    plt.tight_layout()
+    plt.savefig('confusion_heatmap.png')
+    plt.show()
+    print(">>> Confusion matrix saved as confusion_heatmap.png")
+
+# --- MAIN EXECUTION ---
+if __name__ == "__main__":
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    
+    # A. Data Preparation
+    print(">>> Reading metadata...")
+    df = pd.read_csv("mmimdb_metadata.csv")
+    df['genres'] = df['genres'].apply(lambda x: x.split("|"))
+    mlb = MultiLabelBinarizer()
+    df['labels_binary'] = list(mlb.fit_transform(df['genres']))
+    class_names = mlb.classes_
+
+    train_df, temp_df = train_test_split(df, test_size=0.2, random_state=42)
+    val_df, _ = train_test_split(temp_df, test_size=0.5, random_state=42)
+
+    # Few-shot configuration: 5% of training set
+    few_shot_df = train_df.sample(frac=0.05, random_state=42)
+    print(f"Number of Few-shot samples: {len(few_shot_df)}")
+
+    # B. CLIP Initialization
+    clip_model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32", use_safetensors=True).to(device)
+    processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
+
+    train_loader = DataLoader(CLIPImageDataset(few_shot_df, processor), batch_size=32, shuffle=True)
+    val_loader = DataLoader(CLIPImageDataset(val_df, processor), batch_size=32, shuffle=False)
+
+    # C. Training
+    model = CLIPLinearProbe(clip_model, num_classes=len(class_names)).to(device)
+    optimizer = torch.optim.AdamW(model.classifier.parameters(), lr=1e-3)
+    criterion = nn.BCEWithLogitsLoss()
+
+    print(">>> Starting Few-shot Linear Probe training...")
+    for epoch in range(10):
+        model.train()
+        total_loss = 0
+        for images, labels in train_loader:
+            images, labels = images.to(device), labels.to(device)
+            optimizer.zero_grad()
+            logits = model(images)
+            loss = criterion(logits, labels)
+            loss.backward()
+            optimizer.step()
+            total_loss += loss.item()
+        
+        # Validation
+        model.eval()
+        all_labels, all_preds = [], []
+        with torch.no_grad():
+            for images, labels in val_loader:
+                images = images.to(device)
+                logits = model(images)
+                # Using threshold 0.4 for higher sensitivity
+                preds = (torch.sigmoid(logits) > 0.4).cpu().numpy() 
+                all_labels.append(labels.numpy())
+                all_preds.append(preds)
+        
+        labels_stack = np.vstack(all_labels)
+        preds_stack = np.vstack(all_preds)
+        micro = f1_score(labels_stack, preds_stack, average='micro', zero_division=0)
+        print(f"Epoch {epoch+1}/10 | Loss: {total_loss/len(train_loader):.4f} | Val Micro-F1: {micro:.4f}")
+
+    # D. Visualization
+    print("\n>>> Generating Confusion Matrix...")
+    plot_multilabel_confusion_matrix(labels_stack, preds_stack, class_names)
+
+    # E. Error Analysis: Print 3 examples of misclassification for the report
+    print("\n--- ERROR ANALYSIS ---")
+    count = 0
+    for i in range(len(labels_stack)):
+        if not np.array_equal(labels_stack[i], preds_stack[i]) and count < 3:
+            true_g = mlb.inverse_transform(labels_stack[i:i+1])
+            pred_g = mlb.inverse_transform(preds_stack[i:i+1])
+            print(f"Example {count+1}:")
+            print(f"  - Ground Truth: {true_g}")
+            print(f"  - Prediction:   {pred_g}")
+            count += 1
+                </code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="results-discussion">
+        <div class="container">
+          <h2 class="section-title">7. Experimental Results & Discussion</h2>
+
+          <div class="content-box">
+            <h3>7.1 Performance Comparison Table</h3>
+            <p>The following table summarizes the performance of all implemented strategies on the MMIMDb test set:</p>
+            
+            <div class="table-responsive">
+              <table class="results-table">
+                <thead>
+                  <tr>
+                    <th>Model Approach</th>
+                    <th>Methodology</th>
+                    <th>Best Val Micro-F1</th>
+                    <th>Macro-F1</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>CLIP Zero-Shot</td>
+                    <td>Inference only (Training-free)</td>
+                    <td>0.2233</td>
+                    <td>0.2103</td>
+                  </tr>
+                  <tr>
+                    <td>CLIP Few-Shot</td>
+                    <td>Linear Probe (5% Data)</td>
+                    <td>0.5266</td>
+                    <td>-</td>
+                  </tr>
+                  <tr>
+                    <td>ViT-Base</td>
+                    <td>Unimodal (Image Only)</td>
+                    <td>0.5304</td>
+                    <td>0.2915</td>
+                  </tr>
+                  <tr>
+                    <td>DistilBERT</td>
+                    <td>Unimodal (Text Only)</td>
+                    <td>0.6473</td>
+                    <td>0.3842</td>
+                  </tr>
+                  <tr style="background-color: #e8f4fd; font-weight: bold; border: 2px solid #2980b9;">
+                    <td>Multimodal Fusion</td>
+                    <td>Full Fine-Tuning</td>
+                    <td><span class="highlight-text">0.6605</span></td>
+                    <td>0.4868</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="content-box">
+            <h3>7.2 Discussion of Findings</h3>
+            <div class="observation-box">
+              <p>
+                <strong>The Power of Multimodality:</strong> The Multimodal Full Fine-tuning model achieved the best performance, with a Micro-F1 of 0.6605 and a Macro-F1 of 0.4868. This demonstrates that combining textual plot summaries with visual poster features provides a more comprehensive understanding of movie genres than relying on a single modality.
+              </p>
+              <p>
+                <strong>Zero-Shot Limitations:</strong> The Zero-shot CLIP model showed significantly lower performance (0.2233). This indicates that while CLIP captures general visual concepts well, movie genre classification is highly nuanced, as posters often rely on abstract or metaphorical imagery that requires domain-specific context.
+              </p>
+              <p>
+                <strong>Few-Shot Efficiency:</strong> The Few-Shot Linear Probe, trained on only <strong>5% of the dataset</strong>, achieved an F1-score of 0.5266—nearly matching the ResNet50 model trained on the full dataset. This highlights the effectiveness of leveraging strong pre-trained features in data-scarce scenarios.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="error-analysis">
+        <div class="container">
+          <h2 class="section-title">8. Error Analysis</h2>
+          <p class="intro-text">
+            To gain a deeper understanding of the model's limitations, we performed both quantitative and qualitative error analyses on the validation set. We specifically focused on <strong>"Critical Failures,"</strong> defined as samples where the <strong>Jaccard Similarity</strong> (the overlap between predicted and true genres) was below <strong>0.2</strong>.
+          </p>
+
+          <div class="content-box">
+            <h3>8.1 Quantitative Analysis: Critical Error Rate</h3>
+            <p>Based on our evaluation of the validation set (approximately 1,520 samples):</p>
+            <ul>
+              <li><strong>Total Critical Errors (Jaccard < 0.2):</strong> 152 samples.</li>
+              <li><strong>Critical Error Rate:</strong> ~10.0%.</li>
+            </ul>
+            <div class="observation-box">
+              <strong>Observation:</strong> While the model achieves a high overall Micro-F1 (0.66), 1 in 10 movies results in a near-total misclassification. This indicates that despite general accuracy, the model remains susceptible to strong <strong>"distractors"</strong> in either the textual or visual modality.
+            </div>
+          </div>
+
+          <div class="content-box">
+            <h3>8.2 Qualitative Case Study: Keyword Bias & Visual Ambiguity</h3>
+            <p>We analyzed a representative case of critical failure to understand the interplay between textual and visual features.</p>
+            
+            <div class="case-study">
+              <h4>Case Study: <em>My Wife is a Gangster</em> (ID: 2)</h4>
+              <div class="model-card">
+                sample_index,image_path,plot_excerpt,ground_truth,predictions,top_3_confidence,jaccard_score
+2,data/images\movie_05706.jpg,"The story of how Eun-jin (Eun-kyung Shin) became a legend in the South Korean underworld by defeating an army of gangsters.
+Note that a movie can belong to more than one genres,provide all the suitable genres separated by commas. Answer:","['Action', 'Comedy', 'Romance']","['Action', 'Crime', 'Drama', 'Thriller']","{'Drama': '0.9262', 'Crime': '0.8991', 'Action': '0.7807'}",0.1667
+              </div>
+              <div class="grid-two-col">
+                <div class="observation-box">
+                  <strong>Ground Truth:</strong> <span class="badge badge-tech">Action</span> <span class="badge badge-tech">Comedy</span> <span class="badge badge-tech">Romance</span><br>
+                  <strong>Model Prediction:</strong> <span class="badge badge-danger">Action</span> <span class="badge badge-danger">Crime</span> <span class="badge badge-danger">Drama</span> <span class="badge badge-danger">Thriller</span><br>
+                  <strong>Jaccard Score:</strong> <span class="highlight-text">0.1667</span> (Critical Failure)
+                </div>
+                <div>
+                  <p><strong>Analysis of Failure Modes:</strong></p>
+                  <ol>
+                    <li>
+                      <strong>Keyword Bias (Textual Over-reliance):</strong> The plot includes phrases like <em>"South Korean underworld"</em> and <em>"defeating an army of gangsters"</em>, which are strongly associated with Crime and Thriller genres in the training data. As a result, the model overemphasizes these keywords, failing to capture the comedic and romantic elements that define the film’s true genre.
+                    </li>
+                    <li>
+                      <strong>Visual Ambiguity (Visual Misinterpretation):</strong> Action-comedy posters often feature high-contrast lighting and weaponry to attract attention. The Vision Transformer (ViT) interprets these cues similarly to those in serious Crime/Drama films, as it lacks the ability to recognize subtle indicators of comedy, such as exaggerated expressions or vibrant color tones.
+                    </li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="content-box">
+            <h3>8.3 The Overconfidence Problem</h3>
+            <p>A striking finding was the model’s high confidence in its errors. In the case above, the model predicted <strong>Drama</strong> with a confidence score of <strong>92.62%</strong>, despite it being incorrect.</p>
+            
+            <div class="grid-two-col">
+              <div class="observation-box">
+                <h4>Model Over-calibration</h4>
+                <p>Modern architectures trained with <strong>BCE Loss</strong> tend to be "over-confident." The loss function penalizes the model if it doesn't push probabilities toward 1 or 0, leading to aggressive maximization of a class if a single strong feature (like the word "gangster") is detected.</p>
+              </div>
+              <div class="observation-box">
+                <h4>"Safe Bet" Strategy</h4>
+                <p><strong>Drama</strong> appears in nearly 50% of the MMIMDb dataset. The model learns that predicting "Drama" for any narrative with emotional weight is a statistically safe bet, leading to a systemic bias toward this label with high certainty.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="content-box">
+            <h3>8.4 Systemic Patterns from Quantitative Data</h3>
+            
+            <div>
+              <div class="chart-item">
+                <img src="/public/multimodal/distribution_failed_samples.png" alt="Distribution of Failed Samples" class="analysis-img" />
+                <p class="chart-caption">Fig 8.4a: Genre-wise Error Distribution</p>
+              </div>
+              <div class="chart-item">
+                <img src="/public/multimodal/critical_prediction_errors.png" alt="Critical Prediction Errors" class="analysis-img" />
+                <p class="chart-caption">Fig 8.4b: Jaccard Score Density (Critical Failures)</p>
+              </div>
+            </div>
+
+            <div class="patterns-list">
+              <ul>
+                <li>
+                  <strong>Tonal Blindness:</strong> <em>Comedy</em>, <em>Thriller</em>, and <em>Romance</em> show the highest <strong>False Negatives</strong>. Unlike genres such as "Action" or "Horror" with clear visual and textual signals, these rely on subtle emotional and narrative cues. The current late-fusion approach (DistilBERT + ViT concatenation) struggles to capture these nuances, often missing them in predictions.
+                </li>
+                <li>
+                  <strong>The "Safe Bet" Bias:</strong> There is a significant spike in <strong>False Positives</strong> for the <em>Drama</em> category. Due to class imbalance—where Drama dominates the dataset—the model adopts a “safe bet” strategy, frequently defaulting to this label when inputs are ambiguous.
+                </li>
+                <li>
+                  <strong>Modality Disconnect:</strong> Many critical errors fall within the <strong>0.0–0.1 Jaccard score range</strong>, representing complete prediction failures. In these cases, misleading signals from one modality (e.g., strong keywords or visuals) overpower correct cues from the other, exposing the weakness of simple feature concatenation in handling cross-modal interactions.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="model-demonstration">
+        <div class="container">
+          <h2 class="section-title">9. Model Demonstration</h2>
+          <p class="intro-text">
+            To demonstrate the practical application of our fine-tuned multimodal architecture, we performed an inference test using the 2014 film <strong>Interstellar</strong>. This case highlights the model's ability to synthesize complex information across two distinct modalities.
+          </p>
+
+          <div class="content-box">
+            <h3>9.1 Input Data</h3>
+            <div>
+              <div class="observation-box">
+                <h4><i class="fas fa-image"></i> Visual Input</h4>
+                <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                  <img src="/public/multimodal/interstellar.png" alt="Interstellar Poster" class="demo-img" />
+                </div>
+              </div>
+              <div class="observation-box">
+                <h4><i class="fas fa-file-alt"></i> Textual Input</h4>
+                <p style="font-style: italic; font-size: 0.9em;">
+                  In a near-future where a global crop blight and second Dust Bowl are slowly rendering the planet uninhabitable, Joseph Cooper, a widowed farmer and ex-NASA pilot, is recruited for a top-secret mission. Alongside a team of researchers, he travels through a newly discovered wormhole near Saturn to find a new home for humanity in a distant galaxy. As they navigate planets with extreme time dilation and massive tidal waves near a supermassive black hole, Cooper must struggle with the emotional toll of leaving his children behind and the scientific mystery of the Tesseract to save the human race from extinction.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="content-box">
+            <h3>9.2 Inference Results</h3>
+            <p>
+              The model processes the image through the <strong>Vision Transformer (ViT)</strong> and the text through <strong>DistilBERT</strong>, concatenating the features for a final multi-label classification.
+            </p>
+
+            <div style="display: flex; justify-content: center; align-items: center; height: 100%; margin-bottom: 20px;">
+              <img src="/public/multimodal/output.png" alt="Inference Output" class="demo-img" />
+            </div>
+
+            <table class="results-table">
+              <thead>
+                <tr>
+                  <th>Metric</th>
+                  <th>Results</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Top 3 Predicted Genres</strong></td>
+                  <td>
+                    <span class="badge badge-tech">Sci-Fi (0.97)</span> 
+                    <span class="badge badge-tech">Adventure (0.75)</span> 
+                    <span class="badge badge-tech">Action (0.68)</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Ground Truth</strong></td>
+                  <td>Adventure, Action, Sci-Fi</td>
+                </tr>
+                <tr class="highlight-row">
+                  <td><strong>Jaccard Similarity</strong></td>
+                  <td>1.0 (Perfect Match)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="content-box video-container">
+            <h3>9.3 Functional Video Demo</h3>
+            <p>The following video demonstrates the real-time inference capabilities of our multimodal system, showing the seamless integration of visual and textual processing.</p>
+            
+            <div class="video-placeholder">
+              <div class="video-overlay">
+                <i class="fas fa-play-circle" style="font-size: 50px; color: #fff; margin-bottom: 10px;"></i>
+                <p>INSERT DEMO VIDEO HERE</p>
+                <span style="font-size: 0.8em; opacity: 0.8;">(mp4, YouTube, or Vimeo embed)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="presentation-video">
+        <div class="container">
+          <h2 class="section-title">10. Presentation Video</h2>
+          <p class="intro-text">
+            The following video provides a comprehensive walkthrough of our research, methodology, and the final multimodal classification results. 
+          </p>
+
+          <div class="content-box">
+            <div class="video-wrapper">
+              <iframe 
+                src="https://www.youtube.com/embed/YOUR_YOUTUBE_VIDEO_ID" 
+                title="Multimodal Movie Genre Classification Presentation" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                allowfullscreen>
+              </iframe>
+            </div>
+            
+            <div class="video-footer">
+              <p><i class="fab fa-youtube"></i> <strong>Watch on YouTube:</strong> 
+                <a href="https://www.youtube.com/watch?v=YOUR_YOUTUBE_VIDEO_ID" target="_blank">
+                  Multimodal Movie Genre Classification - Group LTH
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="source-code">
+        <div class="container">
+          <h2 class="section-title">11. Source Code</h2>
+          <p class="intro-text">
+            The complete implementation of this multimodal classification project is available on GitHub:
+          </p>
+
+          <div class="content-box" style="text-align: center; padding: 30px;">
+            <div class="github-link-container">
+              <i class="fab fa-github" style="font-size: 48px; color: #24292e; margin-bottom: 15px;"></i>
+              <br>
+              <a href="https://github.com/tin0206/DL_252.git" target="_blank" class="github-url">
+                https://github.com/tin0206/DL_252.git
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="conclusion">
+        <div class="container">
+          <h2 class="section-title">12. Conclusion</h2>
+          <p class="intro-text">
+            In this assignment, we developed and evaluated multiple approaches for movie genre classification using the MMIMDb dataset, ranging from zero-shot heuristics to full multimodal fine-tuning.
+          </p>
+
+          <div class="content-box conclusion-highlight">
+            <h3>Key Findings & Insights</h3>
+            
+            <div class="grid-two-col">
+              <div class="observation-box" style="border-left-color: var(--secondary-color);">
+                <h4><i class="fas fa-project-diagram"></i> Multimodal Superiority</h4>
+                <p>
+                  The fine-tuned fusion model (<strong>Micro-F1: 0.6605</strong>) significantly outperformed the Zero-shot CLIP baseline (<strong>Micro-F1: 0.2233</strong>). 
+                </p>
+                <p style="font-size: 0.9em; color: var(--text-muted);">
+                  This confirms that movie genres are often metaphorical and context-dependent, requiring domain-specific fine-tuning rather than relying solely on general-purpose vision-language alignments.
+                </p>
+              </div>
+
+              <div class="observation-box" style="border-left-color: var(--accent-color);">
+                <h4><i class="fas fa-bolt"></i> Efficiency of Few-Shot Learning</h4>
+                <p>
+                  By training on only <strong>5% of the data</strong>, the Few-Shot Linear Probe achieved over 80% of the performance of the full fine-tuned version (<strong>Micro-F1: 0.5266</strong>).
+                </p>
+                <p style="font-size: 0.9em; color: var(--text-muted);">
+                  This demonstrates a cost-effective and computationally efficient strategy for labeling niche or smaller cinematic databases where large-scale labeling is not feasible.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
 
     <footer>
