@@ -18,24 +18,25 @@
 
 ## 📂 Project Structure
 
-Danh sách các bài tập lớn thực hiện trong học kỳ:
+Trình tự thực hiện các bài tập lớn trong học kỳ:
 
 ### 📝 [Assignment 1: Classification](./assignment1.md)
 
-_Trạng thái: Hoàn thành_
+Tập trung vào các kỹ thuật phân loại trên nhiều dạng dữ liệu khác nhau. Nhấn vào tiêu đề bài tập để xem báo cáo chi tiết cho:
 
-- Phân loại đa phương thức (Image, Text, Multimodal).
-- Xem chi tiết báo cáo tại: [**assignment1.md**](./assignment1.md)
+- 🖼️ **Image Classification**
+- 📝 **Text Classification**
+- 🧬 **Multimodal Classification**
 
 ### 🔄 Assignment 2: [Tên chủ đề]
 
-_Trạng thái: Đang thực hiện_
+_(Đang cập nhật...)_
 
 - [Link tới báo cáo 2](#)
 
 ### 🚀 Assignment 3: [Tên chủ đề]
 
-_Trạng thái: Dự kiến_
+_(Đang cập nhật...)_
 
 - [Link tới báo cáo 3](#)
 
