@@ -1,7 +1,7 @@
 # Deep Learning Assignments - Group LTH (252)
 
 **Course:** Deep Learning (CO3021)  
-**Instructor:** TS. Lê Thành Sách  
+**Instructor:** Dr. Sách Lê Thành  
 **Institution:** Ho Chi Minh City University of Technology (HCMUT)
 
 ---
@@ -18,31 +18,31 @@
 
 ## 📂 Project Structure
 
-Trình tự thực hiện các bài tập lớn trong học kỳ:
+Sequence of major assignments conducted during the semester:
 
 ### 📝 [Assignment 1: Classification](./assignment1.md)
 
-Tập trung vào các kỹ thuật phân loại trên nhiều dạng dữ liệu khác nhau. Nhấn vào tiêu đề bài tập để xem báo cáo chi tiết cho:
+Focusing on classification techniques across various data modalities. Click the assignment title to view detailed reports for:
 
 - 🖼️ **Image Classification**
 - 📝 **Text Classification**
 - 🧬 **Multimodal Classification**
 
-### 🔄 Assignment 2: [Tên chủ đề]
+### 🔄 Assignment 2: [Topic Name]
 
-_(Đang cập nhật...)_
+_(Coming Soon...)_
 
-- [Link tới báo cáo 2](#)
+- [Link to Report 2](#)
 
-### 🚀 Assignment 3: [Tên chủ đề]
+### 🚀 Assignment 3: [Topic Name]
 
-_(Đang cập nhật...)_
+_(Coming Soon...)_
 
-- [Link tới báo cáo 3](#)
+- [Link to Report 3](#)
 
 ---
 
 ## 🏛 Faculty Information
 
-**Khoa Khoa học và Kỹ thuật Máy tính** Trường Đại học Bách Khoa - ĐHQG TP.HCM  
-_Học kỳ: 242_
+**Faculty of Computer Science and Engineering** Ho Chi Minh City University of Technology (HCMUT)  
+_Semester: 242_

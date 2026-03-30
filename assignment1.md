@@ -2,30 +2,35 @@
 
 **Course:** Deep Learning  
 **Group:** LTH (252)  
-**Instructor:** Lê Thành Sách
+**Instructor:** Dr. Sách Lê Thành
 
 ---
 
 ## 👥 Team Members
 
-| Họ và tên                | MSSV    | Vai trò     | Phụ trách                 |
-| :----------------------- | :------ | :---------- | :------------------------ |
-| **Nguyễn Trung Tín**     | 2353188 | Trưởng nhóm | Multimodal Classification |
-| **Ngô Đăng Hào**         | 2352295 | Thành viên  | Image Classification      |
-| **Nguyễn Đình Phi Long** | 2352690 | Thành viên  | Text Classification       |
+| Name                     | Student ID | Role   | Main Responsibility       |
+| :----------------------- | :--------- | :----- | :------------------------ |
+| **Nguyễn Trung Tín**     | 2353188    | Leader | Multimodal Classification |
+| **Ngô Đăng Hào**         | 2352295    | Member | Image Classification      |
+| **Nguyễn Đình Phi Long** | 2352690    | Member | Text Classification       |
 
 ---
 
 ## 📚 Course Assignments
 
-Báo cáo chi tiết và kết quả thực nghiệm cho từng loại dữ liệu:
+Detailed reports and experimental results for each data modality:
 
-- [**Image Classification**](image.html)
-- [**Text Classification**](text.html)
-- [**Multimodal Classification**](multimodal.html)
+- [**Image Classification**](image.md)
+- [**Text Classification**](text.md)
+- [**Multimodal Classification**](multimodal.md)
 
 ---
 
-### 🏛 Tổ chức
+## 🏛 Faculty Information
 
-**TRƯỜNG ĐẠI HỌC BÁCH KHOA TP.HCM (HCMUT)** _Khoa Khoa học và Kỹ thuật Máy tính_
+**Faculty of Computer Science and Engineering** Ho Chi Minh City University of Technology (HCMUT)  
+_Semester: 242_
+
+---
+
+[⬅️ Back to Home README](./README.md)
