@@ -361,6 +361,21 @@
         color: #2c3e50;
       }
 
+      .strategy-panels {
+        border: 1px solid #d8e1f5;
+        border-radius: 12px;
+        background: #fff;
+        padding: 16px;
+      }
+
+      .strategy-panel {
+        display: none;
+      }
+
+      .strategy-panel.is-active {
+        display: block;
+      }
+
       .code-tools {
         display: flex;
         justify-content: flex-end;
@@ -1611,35 +1626,42 @@ plt.show()
         </p>
 
         <div class="content-box">
-          <h3>Dataset Localization & CSV Construction</h3>
-          <p>
-            To make training stable and reproducible, we saved the processed
-            dataset into a local CSV named <code>mmimdb_metadata.csv</code>.
-            This file stores essential fields used by the custom dataset class.
-          </p>
+          <div class="toggle-list">
+            <div class="toggle-item is-open">
+              <button class="toggle-btn" type="button">
+                <span>Dataset Localization & CSV Construction</span>
+                <i class="fas fa-chevron-down"></i>
+              </button>
+              <div class="toggle-content">
+                <p>
+                  To make training stable and reproducible, we saved the
+                  processed dataset into a local CSV named
+                  <code>mmimdb_metadata.csv</code>. This file stores essential
+                  fields used by the custom dataset class.
+                </p>
 
-          <div>
-            <div>
-              <h4>Code Snippet (CSV Construction)</h4>
-              <div class="code-demo-block">
-                <div class="code-tools">
-                  <button
-                    class="code-tool-btn"
-                    type="button"
-                    data-action="copy"
-                  >
-                    <i class="fas fa-copy"></i> Copy
-                  </button>
-                  <a
-                    href="/public/multimodal/download_data.py"
-                    download="download_data.py"
-                    class="code-tool-btn"
-                    style="text-decoration: none; display: inline-block"
-                  >
-                    <i class="fas fa-download"></i> Download
-                  </a>
-                </div>
-                <textarea class="code-editor" readonly>
+                <div>
+                  <div>
+                    <h4>Code Snippet (CSV Construction)</h4>
+                    <div class="code-demo-block">
+                      <div class="code-tools">
+                        <button
+                          class="code-tool-btn"
+                          type="button"
+                          data-action="copy"
+                        >
+                          <i class="fas fa-copy"></i> Copy
+                        </button>
+                        <a
+                          href="/public/multimodal/download_data.py"
+                          download="download_data.py"
+                          class="code-tool-btn"
+                          style="text-decoration: none; display: inline-block"
+                        >
+                          <i class="fas fa-download"></i> Download
+                        </a>
+                      </div>
+                      <textarea class="code-editor" readonly>
 import os
 import pandas as pd
 from datasets import load_dataset
@@ -1695,22 +1717,26 @@ for i, item in enumerate(tqdm(ds, desc="Saving images and metadata")):
 df = pd.DataFrame(data_list)
 df.to_csv("mmimdb_metadata.csv", index=False)
 print(f"\n>>> Success! Saved {len(df)} samples to mmimdb_metadata.csv")
-                </textarea>
-              </div>
-            </div>
+                </textarea
+                      >
+                    </div>
+                  </div>
 
-            <div>
-              <h4>Metadata Preview</h4>
-              <div class="image-container" style="margin-top: 0">
-                <img
-                  src="/public/multimodal/mmidb_metadata.png"
-                  alt="MMIMDb metadata CSV preview"
-                  style="max-width: 100%"
-                />
-                <p class="caption">
-                  Preview of <code>mmimdb_metadata.csv</code> showing plot text,
-                  local image paths, and multi-label genre strings.
-                </p>
+                  <div>
+                    <h4>Metadata Preview</h4>
+                    <div class="image-container" style="margin-top: 0">
+                      <img
+                        src="/public/multimodal/mmidb_metadata.png"
+                        alt="MMIMDb metadata CSV preview"
+                        style="max-width: 100%"
+                      />
+                      <p class="caption">
+                        Preview of <code>mmimdb_metadata.csv</code> showing plot
+                        text, local image paths, and multi-label genre strings.
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -2480,6 +2506,685 @@ class MultimodalModel(nn.Module):
             </div>
           </div>
         </div>
+
+        <div class="content-box analysis-hub">
+          <h3>Training Strategy Source Code</h3>
+
+          <div class="pipeline-flow" id="strategy-flow">
+            <button
+              class="pipeline-step is-active"
+              type="button"
+              data-strategy-step="zero-shot"
+            >
+              <span class="pipeline-step-title">Zero-Shot</span>
+            </button>
+
+            <button
+              class="pipeline-step"
+              type="button"
+              data-strategy-step="few-shot"
+            >
+              <span class="pipeline-step-title">Few-Shot</span>
+            </button>
+
+            <button
+              class="pipeline-step"
+              type="button"
+              data-strategy-step="full-finetune"
+            >
+              <span class="pipeline-step-title">Full Fine-Tune</span>
+            </button>
+          </div>
+
+          <div class="strategy-panels" id="strategy-panels">
+            <div
+              class="strategy-panel is-active"
+              data-strategy-panel="zero-shot"
+            >
+              <div class="code-demo-block">
+                <div class="code-tools">
+                  <button
+                    class="code-tool-btn"
+                    type="button"
+                    data-action="copy"
+                  >
+                    <i class="fas fa-copy"></i> Copy
+                  </button>
+                  <a
+                    href="/public/multimodal/zero_shot_clip.py"
+                    download="zero_shot_clip.py"
+                    class="code-tool-btn"
+                    style="text-decoration: none; display: inline-block"
+                  >
+                    <i class="fas fa-download"></i> Download
+                  </a>
+                </div>
+                <textarea
+                  class="code-editor"
+                  style="min-height: 300px"
+                  readonly
+                >
+import os
+import torch
+import pandas as pd
+import numpy as np
+from PIL import Image
+from tqdm import tqdm
+from sklearn.metrics import f1_score, classification_report, accuracy_score, hamming_loss
+from transformers import CLIPProcessor, CLIPModel
+from sklearn.preprocessing import MultiLabelBinarizer
+
+# --- 1. SETUP & MODEL LOADING ---
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print(f"✅ Using device: {device}")
+
+# Load CLIP with safetensors to avoid security errors on older Torch versions
+model_id = "openai/clip-vit-base-patch32"
+model = CLIPModel.from_pretrained(model_id, use_safetensors=True).to(device)
+processor = CLIPProcessor.from_pretrained(model_id)
+
+# --- 2. DATA PREPARATION ---
+df = pd.read_csv("mmimdb_metadata.csv")
+
+# Ensure genres are lists (converts "Drama|Action" -> ["Drama", "Action"])
+df['genres_list'] = df['genres'].apply(lambda x: x.split("|") if isinstance(x, str) else [])
+
+# IMPORTANT: Fit MLB on the ENTIRE dataset first to lock the 26-column format
+mlb = MultiLabelBinarizer()
+mlb.fit(df['genres_list'])
+class_names = mlb.classes_
+num_classes = len(class_names)
+
+print(f"✅ Total unique genres identified: {num_classes}")
+print(f"✅ Genres: {', '.join(class_names)}")
+
+# Prepare the 26 natural language prompts
+prompts = [f"A movie poster of the genre {g}" for g in class_names]
+
+# --- 3. INFERENCE ENGINE ---
+def run_zero_shot(mode="multimodal", sample_size=500):
+    all_labels = []
+    all_preds = []
+    
+    print(f"\nEvaluation Mode: {mode.upper()}")
+    model.eval()
+    
+    # Use a fixed random_state so all 3 modes test on the EXACT same movies
+    test_subset = df.sample(min(sample_size, len(df)), random_state=42)
+    
+    with torch.no_grad():
+        for _, row in tqdm(test_subset.iterrows(), total=len(test_subset)):
+            # A. Prepare Text (Plot) - Truncate to stay within CLIP's 77-token limit
+            plot_snippet = str(row['plot'])[:250] 
+            
+            # B. Prepare Image
+            try:
+                image = Image.open(row['image_path']).convert('RGB')
+            except Exception:
+                # Fallback for missing images
+                image = Image.new('RGB', (224, 224), color=0)
+
+            # C. CLIP Forward Pass
+            # We process 26 genre prompts + 1 movie plot + 1 image in one go
+            inputs = processor(
+                text=prompts + [plot_snippet], 
+                images=image, 
+                return_tensors="pt", 
+                padding=True
+            ).to(device)
+            
+            outputs = model(**inputs)
+            
+            # --- IMAGE-TO-GENRE BRANCH ---
+            # Similarity between Image and the 26 Prompts
+            probs_img = outputs.logits_per_image[:, :num_classes].softmax(dim=-1).cpu().numpy()[0]
+
+            # --- TEXT-TO-GENRE BRANCH ---
+            # Compare Plot Embedding against the 26 Genre Embeddings
+            text_embeds = outputs.text_embeds      # Shape: [27, 512]
+            genre_embeds = text_embeds[:-1]        # First 26 (The Genres)
+            plot_embed = text_embeds[-1:]          # Last 1 (The Plot)
+            
+            # Manual Cosine Similarity Calculation for text-only (Plot vs Genres)
+            logits_text = torch.matmul(plot_embed, genre_embeds.t()) * model.logit_scale.exp()
+            probs_text = logits_text.softmax(dim=-1).cpu().numpy()[0]
+
+            # --- FUSION LOGIC ---
+            if mode == "image_only":
+                final_probs = probs_img
+            elif mode == "text_only":
+                final_probs = probs_text
+            else: # Multimodal (Mean Fusion of Image and Text probabilities)
+                final_probs = (probs_img + probs_text) / 2
+
+            # Multi-label thresholding (0.1 is standard for MM-IMDb zero-shot)
+            pred_binary = (final_probs > 0.1).astype(int)
+            
+            # Transform ground truth to binary vector [0, 1, 0...]
+            true_binary = mlb.transform([row['genres_list']])[0]
+            
+            # Safety check: ensure arrays match the expected 26 classes
+            if len(pred_binary) == num_classes:
+                all_labels.append(true_binary)
+                all_preds.append(pred_binary)
+
+    # Use vstack to ensure a clean 2D matrix for sklearn [Samples x Classes]
+    return np.vstack(all_labels), np.vstack(all_preds)
+
+# --- 4. EXECUTION & RESULTS ---
+final_results = {}
+
+for m in ["image_only", "text_only", "multimodal"]:
+    y_true, y_pred = run_zero_shot(mode=m)
+    
+    # Calculate Micro F1 (standard for multi-label tasks)
+    micro_f1 = f1_score(y_true, y_pred, average='micro', zero_division=0)
+    macro_f1 = f1_score(y_true, y_pred, average='macro', zero_division=0)
+    
+    # Optional: Calculate Subset Accuracy (strict match, not ideal for multi-label but informative)
+    subset_acc = accuracy_score(y_true, y_pred)
+
+    hamming_acc = 1 - hamming_loss(y_true, y_pred)
+    final_results[m] = {
+        "micro_f1": micro_f1,
+        "macro_f1": macro_f1,
+        "subset_acc": subset_acc,
+        "hamming_acc": hamming_acc
+    }
+
+# --- 5. FINAL COMPARISON TABLE ---
+print("\n" + "="*75)
+print(f"{'MODE':<20} | {'Micro-F1':<10} | {'Macro-F1':<10} | {'Subset Acc':<12} | {'Hamming Acc':<12}")
+print("-" * 75)
+
+for mode, scores in final_results.items():
+    print(f"{mode:<20} | {scores['micro_f1']:.4f}     | {scores['macro_f1']:.4f}     | {scores['subset_acc']:.4f}      | {scores['hamming_acc']:.4f}")
+
+print("="*75)
+
+# Optional: Print detailed report for the best performing mode (usually Multimodal)
+print("\nDetailed Report for Multimodal Fusion:")
+labels_final, preds_final = run_zero_shot(mode="multimodal", sample_size=300)
+print(classification_report(labels_final, preds_final, target_names=class_names, zero_division=0))
+                </textarea>
+              </div>
+            </div>
+
+            <div class="strategy-panel" data-strategy-panel="few-shot">
+              <div class="code-demo-block">
+                <div class="code-tools">
+                  <button
+                    class="code-tool-btn"
+                    type="button"
+                    data-action="copy"
+                  >
+                    <i class="fas fa-copy"></i> Copy
+                  </button>
+                  <a
+                    href="/public/multimodal/few_shot_clip.py"
+                    download="few_shot_clip.py"
+                    class="code-tool-btn"
+                    style="text-decoration: none; display: inline-block"
+                  >
+                    <i class="fas fa-download"></i> Download
+                  </a>
+                </div>
+                <textarea
+                  class="code-editor"
+                  style="min-height: 300px"
+                  readonly
+                >
+import torch
+import torch.nn as nn
+import pandas as pd
+import numpy as np
+from tqdm import tqdm
+from PIL import Image
+from torch.utils.data import DataLoader, Dataset
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MultiLabelBinarizer
+from sklearn.metrics import f1_score, accuracy_score, hamming_loss
+from transformers import CLIPProcessor, CLIPModel
+
+# =========================
+# 1. DATASET
+# =========================
+class CLIPMultimodalDataset(Dataset):
+    def __init__(self, df, processor):
+        self.df = df.reset_index(drop=True)
+        self.processor = processor
+
+    def __len__(self):
+        return len(self.df)
+
+    def __getitem__(self, idx):
+        row = self.df.iloc[idx]
+
+        # Text (truncate for CLIP)
+        plot_text = str(row['plot'])[:150]
+
+        # Image
+        try:
+            image = Image.open(row['image_path']).convert('RGB')
+        except:
+            image = Image.new('RGB', (224, 224), color=0)
+
+        inputs = self.processor(
+            text=[plot_text],
+            images=image,
+            return_tensors="pt",
+            padding='max_length',
+            truncation=True
+        )
+
+        labels = torch.tensor(row['labels_binary'], dtype=torch.float)
+
+        return (
+            inputs['pixel_values'].squeeze(0),
+            inputs['input_ids'].squeeze(0),
+            inputs['attention_mask'].squeeze(0),
+            labels
+        )
+
+# =========================
+# 2. MODEL
+# =========================
+class CLIPLinearProbe(nn.Module):
+    def __init__(self, clip_model, num_classes, mode="multimodal"):
+        super().__init__()
+        self.mode = mode
+        self.clip = clip_model
+
+        # Freeze CLIP
+        for param in self.clip.parameters():
+            param.requires_grad = False
+
+        v_dim = self.clip.vision_model.config.hidden_size
+        t_dim = self.clip.text_model.config.hidden_size
+
+        if mode == "image_only":
+            input_dim = v_dim
+        elif mode == "text_only":
+            input_dim = t_dim
+        else:
+            input_dim = v_dim + t_dim
+
+        # Improved classifier
+        self.classifier = nn.Sequential(
+            nn.Linear(input_dim, 512),
+            nn.ReLU(),
+            nn.Dropout(0.2),
+            nn.Linear(512, num_classes)
+        )
+
+    def forward(self, pixel_values, input_ids, attention_mask):
+        if self.mode in ["image_only", "multimodal"]:
+            v_outputs = self.clip.vision_model(pixel_values=pixel_values)
+            v_out = v_outputs.pooler_output
+
+        if self.mode in ["text_only", "multimodal"]:
+            t_outputs = self.clip.text_model(
+                input_ids=input_ids,
+                attention_mask=attention_mask
+            )
+            t_out = t_outputs.pooler_output
+
+        if self.mode == "image_only":
+            features = v_out
+
+        elif self.mode == "text_only":
+            features = t_out
+
+        else:  # multimodal
+            features = torch.cat((v_out, t_out), dim=1)
+
+        return self.classifier(features)
+
+# =========================
+# 3. TRAIN + EVAL
+# =========================
+def run_few_shot_experiment(mode, train_loader, val_loader, num_classes, device, clip_model):
+
+    print(f"\nTraining FEW-SHOT: {mode.upper()}")
+
+    model = CLIPLinearProbe(clip_model, num_classes, mode=mode).to(device)
+
+    optimizer = torch.optim.AdamW(model.classifier.parameters(), lr=1e-3)
+    criterion = nn.BCEWithLogitsLoss()
+
+    # ===== TRAIN =====
+    for epoch in range(5):
+        model.train()
+        total_loss = 0
+
+        for v, tid, am, labels in train_loader:
+            v, tid, am, labels = v.to(device), tid.to(device), am.to(device), labels.to(device)
+
+            optimizer.zero_grad()
+            logits = model(v, tid, am)
+            loss = criterion(logits, labels)
+            loss.backward()
+            optimizer.step()
+
+            total_loss += loss.item()
+
+        print(f"Epoch {epoch+1}/5 - Loss: {total_loss/len(train_loader):.4f}")
+
+    # ===== EVAL =====
+    model.eval()
+    all_true, all_pred = [], []
+
+    with torch.no_grad():
+        for v, tid, am, labels in val_loader:
+            v, tid, am = v.to(device), tid.to(device), am.to(device)
+
+            logits = model(v, tid, am)
+            probs = torch.sigmoid(logits)
+
+            preds = (probs > 0.3).cpu().numpy()
+
+            all_true.append(labels.numpy())
+            all_pred.append(preds)
+
+    y_true = np.vstack(all_true)
+    y_pred = np.vstack(all_pred)
+
+    # ===== METRICS =====
+    micro = f1_score(y_true, y_pred, average='micro', zero_division=0)
+    macro = f1_score(y_true, y_pred, average='macro', zero_division=0)
+    subset_acc = accuracy_score(y_true, y_pred)
+    hamming_acc = 1 - hamming_loss(y_true, y_pred)
+
+    return {
+        "Micro-F1": micro,
+        "Macro-F1": macro,
+        "Subset Acc": subset_acc,
+        "Hamming Acc": hamming_acc
+    }
+
+# =========================
+# 4. MAIN
+# =========================
+if __name__ == "__main__":
+
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+    print(">>> Loading dataset...")
+    df = pd.read_csv("mmimdb_metadata.csv")
+
+    df['genres_list'] = df['genres'].apply(lambda x: x.split("|"))
+
+    mlb = MultiLabelBinarizer()
+    df['labels_binary'] = list(mlb.fit_transform(df['genres_list']))
+
+    # Split
+    train_df, val_df = train_test_split(df, test_size=0.2, random_state=42)
+
+    # Few-shot (5%)
+    few_shot_df = train_df.sample(frac=0.05, random_state=42)
+    print(f">>> Few-shot samples: {len(few_shot_df)}")
+
+    # Load CLIP
+    clip_model = CLIPModel.from_pretrained(
+        "openai/clip-vit-base-patch32",
+        use_safetensors=True
+    ).to(device)
+
+    processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
+
+    # DataLoader
+    train_loader = DataLoader(CLIPMultimodalDataset(few_shot_df, processor), batch_size=32, shuffle=True)
+    val_loader = DataLoader(CLIPMultimodalDataset(val_df, processor), batch_size=32)
+
+    # ===== RUN EXPERIMENTS =====
+    results = {}
+
+    for mode in ["image_only", "text_only", "multimodal"]:
+        results[mode] = run_few_shot_experiment(
+            mode,
+            train_loader,
+            val_loader,
+            len(mlb.classes_),
+            device,
+            clip_model
+        )
+
+    # ===== PRINT TABLE =====
+    print("\n" + "="*75)
+    print(f"{'MODE':<15} | {'Micro-F1':<10} | {'Macro-F1':<10} | {'Subset Acc':<12} | {'Hamming Acc':<12}")
+    print("-"*75)
+
+    for mode, m in results.items():
+        print(f"{mode:<15} | {m['Micro-F1']:.4f}     | {m['Macro-F1']:.4f}     | {m['Subset Acc']:.4f}      | {m['Hamming Acc']:.4f}")
+
+    print("="*75)
+                </textarea>
+              </div>
+            </div>
+
+            <div class="strategy-panel" data-strategy-panel="full-finetune">
+              <div class="code-demo-block">
+                <div class="code-tools">
+                  <button
+                    class="code-tool-btn"
+                    type="button"
+                    data-action="copy"
+                  >
+                    <i class="fas fa-copy"></i> Copy
+                  </button>
+                  <a
+                    href="/public/multimodal/train_multimodal.py"
+                    download="train_multimodal.py"
+                    class="code-tool-btn"
+                    style="text-decoration: none; display: inline-block"
+                  >
+                    <i class="fas fa-download"></i> Download
+                  </a>
+                </div>
+                <textarea
+                  class="code-editor"
+                  style="min-height: 300px"
+                  readonly
+                >
+import torch
+import torch.nn as nn
+import numpy as np
+import pandas as pd
+from tqdm import tqdm
+from sklearn.metrics import f1_score, accuracy_score
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MultiLabelBinarizer
+from torch.utils.data import DataLoader
+from transformers import AutoTokenizer, AutoImageProcessor, AutoModel, ViTModel
+
+from split_data_and_dataloader import MMIMDbLocalDataset
+
+
+# =========================
+# 1. MODELS
+# =========================
+
+class TextOnlyModel(nn.Module):
+    def __init__(self, num_classes):
+        super().__init__()
+        self.text_model = AutoModel.from_pretrained("distilbert-base-uncased")
+        self.classifier = nn.Linear(768, num_classes)
+
+    def forward(self, input_ids, attention_mask, pixel_values=None):
+        out = self.text_model(input_ids=input_ids, attention_mask=attention_mask)
+        feat = out.last_hidden_state[:, 0, :]
+        return self.classifier(feat)
+
+
+class ImageOnlyModel(nn.Module):
+    def __init__(self, num_classes):
+        super().__init__()
+        self.image_model = ViTModel.from_pretrained("google/vit-base-patch16-224-in21k")
+        self.classifier = nn.Linear(768, num_classes)
+
+    def forward(self, input_ids=None, attention_mask=None, pixel_values=None):
+        out = self.image_model(pixel_values=pixel_values)
+        feat = out.last_hidden_state[:, 0, :]
+        return self.classifier(feat)
+
+
+class MultimodalModel(nn.Module):
+    def __init__(self, num_classes):
+        super().__init__()
+        self.text_model = AutoModel.from_pretrained("distilbert-base-uncased")
+        self.image_model = ViTModel.from_pretrained("google/vit-base-patch16-224-in21k")
+
+        self.classifier = nn.Sequential(
+            nn.Linear(768 + 768, 512),
+            nn.ReLU(),
+            nn.Dropout(0.2),
+            nn.Linear(512, num_classes)
+        )
+
+    def forward(self, input_ids, attention_mask, pixel_values):
+        text_out = self.text_model(input_ids=input_ids, attention_mask=attention_mask)
+        text_feat = text_out.last_hidden_state[:, 0, :]
+
+        img_out = self.image_model(pixel_values=pixel_values)
+        img_feat = img_out.last_hidden_state[:, 0, :]
+
+        combined = torch.cat((text_feat, img_feat), dim=1)
+        return self.classifier(combined)
+
+
+# =========================
+# 2. EVALUATE
+# =========================
+
+def evaluate(model, dataloader, criterion, device):
+    model.eval()
+    all_labels, all_preds = [], []
+    val_loss = 0
+
+    with torch.no_grad():
+        for batch in dataloader:
+            input_ids = batch['input_ids'].to(device)
+            attention_mask = batch['attention_mask'].to(device)
+            pixel_values = batch['pixel_values'].to(device)
+            labels = batch['labels'].to(device)
+
+            logits = model(input_ids, attention_mask, pixel_values)
+            loss = criterion(logits, labels)
+            val_loss += loss.item()
+
+            preds = (torch.sigmoid(logits) > 0.5).cpu().numpy()
+
+            all_labels.append(labels.cpu().numpy())
+            all_preds.append(preds)
+
+    all_labels = np.vstack(all_labels)
+    all_preds = np.vstack(all_preds)
+
+    return (
+        val_loss / len(dataloader),
+        f1_score(all_labels, all_preds, average='micro'),
+        f1_score(all_labels, all_preds, average='macro'),
+        accuracy_score(all_labels, all_preds)
+    )
+
+
+# =========================
+# 3. TRAIN FUNCTION
+# =========================
+
+def train_model(model, train_loader, val_loader, device, epochs=5):
+    model.to(device)
+    criterion = nn.BCEWithLogitsLoss()
+    optimizer = torch.optim.AdamW(model.parameters(), lr=2e-5)
+
+    best_f1 = 0
+
+    for epoch in range(epochs):
+        model.train()
+        total_loss = 0
+
+        pbar = tqdm(train_loader, desc=f"Epoch {epoch+1}/{epochs}")
+        for batch in pbar:
+            input_ids = batch['input_ids'].to(device)
+            attention_mask = batch['attention_mask'].to(device)
+            pixel_values = batch['pixel_values'].to(device)
+            labels = batch['labels'].to(device)
+
+            optimizer.zero_grad()
+            logits = model(input_ids, attention_mask, pixel_values)
+            loss = criterion(logits, labels)
+
+            loss.backward()
+            optimizer.step()
+
+            total_loss += loss.item()
+            pbar.set_postfix({'loss': f"{loss.item():.4f}"})
+
+        v_loss, micro, macro, acc = evaluate(model, val_loader, criterion, device)
+
+        print(f"\n[Val] Loss: {v_loss:.4f} | Micro-F1: {micro:.4f} | Macro-F1: {macro:.4f} | Acc: {acc:.4f}")
+
+        if micro > best_f1:
+            best_f1 = micro
+
+    return best_f1, macro, acc
+
+
+# =========================
+# 4. MAIN
+# =========================
+
+if __name__ == "__main__":
+    print(">>> Loading dataset...")
+    df = pd.read_csv("mmimdb_metadata.csv")
+
+    df['genres'] = df['genres'].apply(lambda x: x.split("|") if isinstance(x, str) else [])
+    mlb = MultiLabelBinarizer()
+    labels_binary = mlb.fit_transform(df['genres'])
+    df['labels_binary'] = list(labels_binary)
+    num_classes = len(mlb.classes_)
+
+    train_df, temp_df = train_test_split(df, test_size=0.2, random_state=42)
+    val_df, _ = train_test_split(temp_df, test_size=0.5, random_state=42)
+
+    tokenizer = AutoTokenizer.from_pretrained("distilbert-base-uncased")
+    image_processor = AutoImageProcessor.from_pretrained("google/vit-base-patch16-224-in21k")
+
+    train_loader = DataLoader(MMIMDbLocalDataset(train_df, tokenizer, image_processor),
+                              batch_size=32, shuffle=True)
+
+    val_loader = DataLoader(MMIMDbLocalDataset(val_df, tokenizer, image_processor),
+                            batch_size=16, shuffle=False)
+
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+    modes = {
+        "text_only": TextOnlyModel(num_classes),
+        "image_only": ImageOnlyModel(num_classes),
+        "multimodal": MultimodalModel(num_classes)
+    }
+
+    results = {}
+
+    for mode, model in modes.items():
+        print(f"\n🚀 Training: {mode.upper()}")
+        micro, macro, acc = train_model(model, train_loader, val_loader, device)
+        results[mode] = (micro, macro, acc)
+
+    # =========================
+    # 5. FINAL RESULTS
+    # =========================
+    print("\n" + "="*70)
+    print("MODE            | Micro-F1   | Macro-F1   | Accuracy")
+    print("-"*70)
+    for mode, (micro, macro, acc) in results.items():
+        print(f"{mode:<15} | {micro:.4f}     | {macro:.4f}     | {acc:.4f}")
+    print("="*70)
+                </textarea>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
     </div>
 
@@ -2698,8 +3403,38 @@ class MultimodalModel(nn.Module):
         });
       };
 
+      const setupStrategySwitching = () => {
+        const steps = document.querySelectorAll("[data-strategy-step]");
+        const panels = document.querySelectorAll("[data-strategy-panel]");
+
+        if (!steps.length || !panels.length) {
+          return;
+        }
+
+        const activateStrategy = (strategy) => {
+          steps.forEach((step) => {
+            const isActive = step.dataset.strategyStep === strategy;
+            step.classList.toggle("is-active", isActive);
+          });
+
+          panels.forEach((panel) => {
+            const isActive = panel.dataset.strategyPanel === strategy;
+            panel.classList.toggle("is-active", isActive);
+          });
+
+          requestAnimationFrame(forceRevealVisible);
+        };
+
+        steps.forEach((step) => {
+          step.addEventListener("click", () => {
+            activateStrategy(step.dataset.strategyStep);
+          });
+        });
+      };
+
       setupSectionToggle();
       setupPipelineSwitching();
+      setupStrategySwitching();
     </script>
   </body>
 </html>
