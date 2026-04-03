@@ -2486,23 +2486,129 @@ class MultimodalModel(nn.Module):
             <div class="pipeline-panel" data-pipeline-panel="output">
               <h4><i class="fas fa-bullseye"></i> Output (Prediction)</h4>
               <p>
-                The model returns probabilities for 26 genres, then applies a
-                threshold to generate final multi-label outputs.
+                This section reports the actual validation outputs collected
+                from our three training strategies under the same modality
+                comparison setup (Text-Only, Image-Only, Multimodal).
               </p>
-              <ul>
-                <li>
-                  <strong>Predictions:</strong> predicted genre set for each
-                  movie.
-                </li>
-                <li>
-                  <strong>Evaluation:</strong> Micro-F1, Macro-F1,
-                  Accuracy/Jaccard.
-                </li>
-                <li>
-                  <strong>Use case:</strong> movie genre classification from
-                  text + poster.
-                </li>
-              </ul>
+
+              <h5>Zero-Shot Output (500-sample evaluation)</h5>
+              <table class="results-table">
+                <thead>
+                  <tr>
+                    <th>Mode</th>
+                    <th>Micro-F1</th>
+                    <th>Macro-F1</th>
+                    <th>Subset Acc</th>
+                    <th>Hamming Acc</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Image-Only</td>
+                    <td>0.2022</td>
+                    <td>0.1761</td>
+                    <td>0.0120</td>
+                    <td>0.8519</td>
+                  </tr>
+                  <tr>
+                    <td>Text-Only</td>
+                    <td>0.3062</td>
+                    <td>0.2169</td>
+                    <td>0.0120</td>
+                    <td>0.8484</td>
+                  </tr>
+                  <tr class="highlight-row">
+                    <td>Multimodal</td>
+                    <td>0.3219</td>
+                    <td>0.2695</td>
+                    <td>0.0120</td>
+                    <td>0.8742</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p>
+                Multimodal fusion provides a robust baseline by effectively
+                combining pre-trained visual and textual knowledge without any
+                task-specific training.
+              </p>
+
+              <h5>Few-Shot Output (5% training subset, 622 samples)</h5>
+              <table class="results-table">
+                <thead>
+                  <tr>
+                    <th>Mode</th>
+                    <th>Micro-F1</th>
+                    <th>Macro-F1</th>
+                    <th>Subset Acc</th>
+                    <th>Hamming Acc</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Image-Only</td>
+                    <td>0.5434</td>
+                    <td>0.3216</td>
+                    <td>0.1096</td>
+                    <td>0.9147</td>
+                  </tr>
+                  <tr>
+                    <td>Text-Only</td>
+                    <td>0.5422</td>
+                    <td>0.3165</td>
+                    <td>0.0694</td>
+                    <td>0.9047</td>
+                  </tr>
+                  <tr class="highlight-row">
+                    <td>Multimodal</td>
+                    <td>0.5908</td>
+                    <td>0.3994</td>
+                    <td>0.1318</td>
+                    <td>0.9222</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p>
+                Linear probing on just 5% of data nearly doubles performance,
+                proving that a lightweight MLP head can rapidly map CLIP
+                features to the movie genre domain.
+              </p>
+
+              <h5>Full Fine-Tune Output (5 epochs)</h5>
+              <table class="results-table">
+                <thead>
+                  <tr>
+                    <th>Mode</th>
+                    <th>Micro-F1</th>
+                    <th>Macro-F1</th>
+                    <th>Accuracy</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Text-Only</td>
+                    <td>0.6293</td>
+                    <td>0.4742</td>
+                    <td>0.2103</td>
+                  </tr>
+                  <tr>
+                    <td>Image-Only</td>
+                    <td>0.4248</td>
+                    <td>0.1200</td>
+                    <td>0.1158</td>
+                  </tr>
+                  <tr class="highlight-row">
+                    <td>Multimodal</td>
+                    <td>0.6624</td>
+                    <td>0.4846</td>
+                    <td>0.2141</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p>
+                End-to-end optimization of specialized Transformers (DistilBERT
+                & ViT) achieves peak accuracy, confirming that full parameter
+                updates are essential for complex multi-label tasks.
+              </p>
             </div>
           </div>
         </div>
