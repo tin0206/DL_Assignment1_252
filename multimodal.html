@@ -23,9 +23,49 @@
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         line-height: 1.6;
         color: var(--text-main);
-        background-color: var(--bg-light);
+        background:
+          radial-gradient(circle at 10% 10%, #e9f3ff 0%, transparent 35%),
+          radial-gradient(circle at 90% 20%, #fff4e7 0%, transparent 30%),
+          var(--bg-light);
         margin: 0;
         padding: 0;
+        scroll-behavior: smooth;
+      }
+
+      body::before,
+      body::after {
+        content: "";
+        position: fixed;
+        width: 280px;
+        height: 280px;
+        border-radius: 50%;
+        filter: blur(55px);
+        z-index: -1;
+        opacity: 0.35;
+        animation: floatBlob 16s ease-in-out infinite;
+      }
+
+      body::before {
+        top: -100px;
+        left: -80px;
+        background: #8dc5ff;
+      }
+
+      body::after {
+        bottom: -120px;
+        right: -80px;
+        background: #ffd19f;
+        animation-delay: 2.5s;
+      }
+
+      @keyframes floatBlob {
+        0%,
+        100% {
+          transform: translate(0, 0) scale(1);
+        }
+        50% {
+          transform: translate(18px, -14px) scale(1.06);
+        }
       }
 
       /* Navigation Bar */
@@ -47,10 +87,39 @@
         font-weight: 500;
         margin-left: 20px;
         transition: color 0.3s;
+        position: relative;
       }
 
       nav a:hover {
         color: var(--secondary-color);
+      }
+
+      nav a::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -4px;
+        width: 100%;
+        height: 2px;
+        background: var(--secondary-color);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.25s ease;
+      }
+
+      nav a:hover::after {
+        transform: scaleX(1);
+      }
+
+      .scroll-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 0;
+        height: 4px;
+        z-index: 1200;
+        background: linear-gradient(90deg, #5ab6f9, #f6a14a);
+        box-shadow: 0 1px 8px rgba(52, 152, 219, 0.5);
       }
 
       .container {
@@ -75,6 +144,14 @@
         margin-bottom: 30px;
         border-radius: 12px;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        transition:
+          transform 0.25s ease,
+          box-shadow 0.25s ease;
+      }
+
+      .content-box:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 28px rgba(44, 62, 80, 0.12);
       }
 
       .content-box h3 {
@@ -82,6 +159,181 @@
         border-left: 5px solid var(--secondary-color);
         padding-left: 15px;
         margin-top: 0;
+      }
+
+      .analysis-hub {
+        background: #f7f8fb;
+        border: 1px solid #d9deee;
+      }
+
+      .analysis-hub h3 {
+        margin-bottom: 18px;
+      }
+
+      .tutorial-box {
+        background: #efeff2;
+        border-left: 4px solid #5a71dc;
+        border-radius: 8px;
+        padding: 18px 20px;
+        color: #48546c;
+        margin-bottom: 18px;
+      }
+
+      .tutorial-box h4 {
+        margin: 0 0 10px;
+        color: #5a71dc;
+        font-size: 1.05rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        user-select: none;
+      }
+
+      .tutorial-box p {
+        margin: 0 0 10px;
+      }
+
+      .tutorial-box p:last-child {
+        margin-bottom: 0;
+      }
+
+      .tutorial-toggle-icon {
+        font-size: 0.9rem;
+        transition: transform 0.2s ease;
+      }
+
+      .tutorial-box.is-collapsed p {
+        display: none;
+      }
+
+      .tutorial-box.is-collapsed .tutorial-toggle-icon {
+        transform: rotate(-90deg);
+      }
+
+      .toggle-list {
+        display: grid;
+        gap: 12px;
+      }
+
+      .toggle-item {
+        border: 1px solid #d9deee;
+        border-radius: 10px;
+        background: #fff;
+        overflow: hidden;
+      }
+
+      .toggle-btn {
+        width: 100%;
+        border: none;
+        background: #eef2ff;
+        color: #2b3d5f;
+        padding: 14px 16px;
+        text-align: left;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition:
+          background 0.2s ease,
+          color 0.2s ease;
+      }
+
+      .toggle-btn:hover {
+        background: #e1e9ff;
+      }
+
+      .toggle-btn i {
+        transition: transform 0.25s ease;
+      }
+
+      .toggle-item.is-open .toggle-btn i {
+        transform: rotate(180deg);
+      }
+
+      .toggle-item.is-open .toggle-btn {
+        background: #dbe7ff;
+        color: #243551;
+      }
+
+      .toggle-content {
+        display: none;
+        padding: 14px 16px 4px;
+        background: #fff;
+      }
+
+      .toggle-item.is-open .toggle-content {
+        display: block;
+      }
+
+      .code-tools {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+
+      .code-tool-btn {
+        border: none;
+        background: #3498db;
+        color: #fff;
+        border-radius: 6px;
+        padding: 6px 12px;
+        cursor: pointer;
+        font-weight: 600;
+      }
+
+      .code-tool-btn:hover {
+        background: #2f80b6;
+      }
+
+      .code-editor {
+        width: 100%;
+        min-height: 450px;
+        border: none;
+        border-radius: 0 8px 8px 0;
+        padding: 12px;
+        font-family: "Consolas", "Courier New", Courier, monospace;
+        font-size: 0.9rem;
+        line-height: 1.45;
+        resize: vertical;
+        box-sizing: border-box;
+        background: #0f172a;
+        color: #e2e8f0;
+      }
+
+      .code-editor:focus {
+        outline: none;
+      }
+
+      .code-editor-shell {
+        display: grid;
+        grid-template-columns: 52px 1fr;
+        border: 1px solid #cbd5e1;
+        border-radius: 10px;
+        overflow: hidden;
+        background: #0f172a;
+        box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.08);
+      }
+
+      .code-line-numbers {
+        margin: 0;
+        padding: 12px 10px;
+        text-align: right;
+        background: #111827;
+        color: #7c8aa5;
+        border-right: 1px solid #1f2937;
+        user-select: none;
+        overflow: hidden;
+      }
+
+      .code-line-numbers span {
+        display: block;
+        font-family: "Consolas", "Courier New", Courier, monospace;
+        font-size: 0.82rem;
+        line-height: 1.45;
       }
 
       .intro-text {
@@ -374,6 +626,19 @@
         margin-top: 60px;
       }
 
+      .reveal {
+        opacity: 0;
+        transform: translateY(18px);
+        transition:
+          opacity 0.45s ease,
+          transform 0.45s ease;
+      }
+
+      .reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
       /* Responsive */
       @media (max-width: 768px) {
         .stats-grid {
@@ -383,9 +648,17 @@
           font-size: 1.5rem;
         }
       }
+
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation: none !important;
+          transition: none !important;
+        }
+      }
     </style>
   </head>
   <body>
+    <div class="scroll-progress" id="scroll-progress"></div>
     <nav>
       <div style="color: white; font-weight: bold; font-size: 1.2rem">
         Group LTH - DL Assignment
@@ -473,87 +746,308 @@
           Semantic Analysis and Visual Feature Analysis.
         </p>
 
-        <div class="content-box">
-          <h3>Genre Distribution & Class Imbalance</h3>
-          <p>
-            The chart illustrates a significant
-            <strong>long-tail class imbalance</strong>, where a few majority
-            classes dominate the dataset. <strong>Drama</strong> and
-            <strong>Comedy</strong> hold the highest frequency, with Drama
-            exceeding 8,000 samples, while niche genres like
-            <strong>Film-Noir</strong>, <strong>News</strong>, and
-            <strong>Reality-TV</strong> are nearly non-existent.
-          </p>
-          <div class="image-container">
-            <img
-              src="/public/multimodal/genre_distribution.png"
-              alt="Genre Distribution Chart"
-            />
-            <p class="caption">
-              Figure 1: Distribution of samples across 26 movie genres,
-              highlighting the class imbalance.
-            </p>
-          </div>
-        </div>
+        <div class="content-box analysis-hub">
+          <h3>Label and Textual Semantic Analysis</h3>
 
-        <div class="content-box">
-          <h3>Multi-label Characteristics</h3>
-          <p>
-            MMIMDb is inherently multi-label. Our analysis shows that most
-            movies are associated with
-            <strong>2 to 3 genres</strong> simultaneously. This overlap requires
-            the model to capture complex relationships between different
-            categories.
-          </p>
-          <div class="image-container">
-            <img
-              src="/public/multimodal/labels_per_movie.png"
-              alt="Genres per Movie Chart"
-              style="max-width: 80%"
-            />
-            <p class="caption">
-              Figure 2: Frequency of the number of labels assigned per movie.
-            </p>
-          </div>
-        </div>
+          <div class="toggle-list">
+            <div class="toggle-item">
+              <button class="toggle-btn" type="button">
+                <span> Code </span>
+                <i class="fas fa-chevron-down"></i>
+              </button>
+              <div class="toggle-content">
+                <div class="code-tools">
+                  <button
+                    class="code-tool-btn"
+                    type="button"
+                    data-action="copy"
+                  >
+                    <i class="fas fa-copy"></i> Copy
+                  </button>
+                  <a
+                    href="/public/multimodal/label_textual_semantic_analysis.py"
+                    download="label_textual_semantic_analysis.py"
+                    class="code-tool-btn"
+                    style="text-decoration: none; display: inline-block"
+                  >
+                    <i class="fas fa-download"></i> Download
+                  </a>
+                </div>
+                <textarea class="code-editor" readonly>
+import os
+import cv2
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import multiprocessing
+from collections import Counter
+from datasets import load_dataset
+from sklearn.preprocessing import MultiLabelBinarizer
+from PIL import Image
+from tqdm import tqdm
 
-        <div class="content-box">
-          <h3>Genre Correlation (Co-occurrence)</h3>
-          <p>
-            The correlation matrix visualizes how genres frequently appear
-            together (e.g., <em>Action</em> often co-occurs with
-            <em>Adventure</em>). Understanding these dependencies is crucial for
-            the <strong>Joint Embedding</strong> strategy.
-          </p>
-          <div class="image-container">
-            <img
-              src="/public/multimodal/correlation_matrix.png"
-              alt="Co-occurrence Heatmap"
-            />
-            <p class="caption">
-              Figure 3: Heatmap illustrating the co-occurrence patterns between
-              genres.
-            </p>
-          </div>
-        </div>
+# Fix for DecompressionBomb and Windows ResourceTracker errors
+Image.MAX_IMAGE_PIXELS = None 
 
-        <div class="content-box">
-          <h3>Textual Feature Analysis</h3>
-          <p>
-            We analyzed the word count distribution of the movie plots. This
-            guided our decision on the
-            <code>max_length</code> parameter for the DistilBERT tokenizer to
-            ensure context isn't truncated.
-          </p>
-          <div class="image-container">
-            <img
-              src="/public/multimodal/text_length.png"
-              alt="Text Length Distribution"
-              style="max-width: 90%"
-            />
-            <p class="caption">
-              Figure 4: Distribution of word counts in movie plot summaries.
-            </p>
+# 1. LOAD DATASET
+print("Loading MM-IMDb dataset...")
+multiprocessing.set_start_method("spawn", force=True)
+ds = load_dataset("sxj1215/mmimdb", split='train', num_proc=1)
+df = pd.DataFrame(ds)
+
+# 2. DATA PARSING
+def parse_content(messages):
+    try:
+        user_msg = messages[0]['content']
+        plot = user_msg.split("Plot: ")[1].split("\nNote")[0].strip()
+        genres = messages[1]['content'].split(", ")
+        return plot, genres
+    except:
+        return None, None
+
+print("Parsing all genres and plots...")
+df[['plot_clean', 'genres_clean']] = df['messages'].apply(lambda x: pd.Series(parse_content(x)))
+df = df.dropna(subset=['plot_clean', 'genres_clean'])
+
+# --- 3. ALL GENRES DISTRIBUTION ---
+all_genres = [g for sublist in df['genres_clean'] for g in sublist]
+genre_counts = Counter(all_genres)
+genre_df = pd.DataFrame(genre_counts.items(), columns=['Genre', 'Count']).sort_values('Count', ascending=False)
+
+plt.figure(figsize=(12, 10))
+sns.barplot(data=genre_df, x='Count', y='Genre', hue='Genre', palette='viridis', legend=False)
+plt.title('Figure 1: Full Genre Distribution (All 26+ Classes)')
+plt.xlabel('Number of Samples')
+plt.show()
+
+# --- 4. MULTI-LABEL ANALYSIS ---
+df['num_genres'] = df['genres_clean'].apply(len)
+plt.figure(figsize=(8, 5))
+sns.countplot(x='num_genres', data=df, palette='magma')
+plt.title('Figure 2: Number of Genres per Movie')
+plt.xlabel('Label Count')
+plt.ylabel('Frequency')
+plt.show()
+
+# --- 5. CO-OCCURRENCE HEATMAP (Degree of Difficulty) ---
+mlb = MultiLabelBinarizer()
+genre_bin = mlb.fit_transform(df['genres_clean'])
+genre_bin_df = pd.DataFrame(genre_bin, columns=mlb.classes_)
+
+plt.figure(figsize=(14, 10))
+sns.heatmap(genre_bin_df.corr(), annot=False, cmap='coolwarm', center=0)
+plt.title('Figure 3: Genre Correlation Matrix (Co-occurrence)')
+plt.show()
+
+# --- 6. TEXT LENGTH ANALYSIS ---
+df['plot_word_count'] = df['plot_clean'].apply(lambda x: len(x.split()))
+plt.figure(figsize=(10, 5))
+sns.histplot(df['plot_word_count'], bins=50, kde=True, color='teal')
+plt.title('Figure 4: Plot Word Count Distribution')
+plt.xlabel('Number of Words')
+plt.show()
+
+print(f"\n✅ Total Rows: {len(df)}")
+print(f"✅ Unique Genres: {len(mlb.classes_)}")
+print(f"✅ Avg Genres per Movie: {df['num_genres'].mean():.2f}")
+                </textarea>
+              </div>
+            </div>
+
+            <div class="toggle-item">
+              <button class="toggle-btn" type="button">
+                <span>Genre Distribution & Class Imbalance</span>
+                <i class="fas fa-chevron-down"></i>
+              </button>
+              <div class="toggle-content">
+                <div class="tutorial-box">
+                  <h4>
+                    <span
+                      ><i class="fas fa-layer-group"></i> Genre Distribution
+                      Analysis</span
+                    >
+                    <i class="fas fa-chevron-down tutorial-toggle-icon"></i>
+                  </h4>
+                  <p><strong>What:</strong></p>
+                  <p>
+                    Examine the number of samples in each genre to detect
+                    imbalanced labels in the MMIMDb multi-label dataset.
+                  </p>
+                  <p><strong>Why:</strong></p>
+                  <p>
+                    Class imbalance can bias predictions toward dominant genres
+                    like Drama and Comedy, reducing performance for rare
+                    classes.
+                  </p>
+                  <p><strong>How:</strong></p>
+                  <p>
+                    Count each genre frequency, sort descending, and plot a bar
+                    chart to reveal the long-tail distribution.
+                  </p>
+                </div>
+                <p>
+                  The chart illustrates a significant
+                  <strong>long-tail class imbalance</strong>, where a few
+                  majority classes dominate the dataset.
+                </p>
+                <div class="image-container">
+                  <img
+                    src="/public/multimodal/genre_distribution.png"
+                    alt="Genre Distribution Chart"
+                  />
+                  <p class="caption">
+                    Figure 1: Distribution of samples across 26 movie genres,
+                    highlighting the class imbalance.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="toggle-item">
+              <button class="toggle-btn" type="button">
+                <span>Multi-label Characteristics</span>
+                <i class="fas fa-chevron-down"></i>
+              </button>
+              <div class="toggle-content">
+                <div class="tutorial-box">
+                  <h4>
+                    <span
+                      ><i class="fas fa-tags"></i> Multi-label Pattern
+                      Analysis</span
+                    >
+                    <i class="fas fa-chevron-down tutorial-toggle-icon"></i>
+                  </h4>
+                  <p><strong>What:</strong></p>
+                  <p>
+                    Analyze how many labels each movie has to understand label
+                    overlap in multi-label classification.
+                  </p>
+                  <p><strong>Why:</strong></p>
+                  <p>
+                    The number of labels per sample indicates output complexity
+                    and helps tune decision thresholds.
+                  </p>
+                  <p><strong>How:</strong></p>
+                  <p>
+                    Compute labels-per-movie counts, then visualize their
+                    frequencies to identify dominant combinations.
+                  </p>
+                </div>
+                <p>
+                  MMIMDb is inherently multi-label. Most movies are associated
+                  with <strong>2 to 3 genres</strong>
+                  simultaneously.
+                </p>
+                <div class="image-container">
+                  <img
+                    src="/public/multimodal/labels_per_movie.png"
+                    alt="Genres per Movie Chart"
+                    style="max-width: 80%"
+                  />
+                  <p class="caption">
+                    Figure 2: Frequency of the number of labels assigned per
+                    movie.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="toggle-item">
+              <button class="toggle-btn" type="button">
+                <span>Genre Correlation (Co-occurrence)</span>
+                <i class="fas fa-chevron-down"></i>
+              </button>
+              <div class="toggle-content">
+                <div class="tutorial-box">
+                  <h4>
+                    <span
+                      ><i class="fas fa-project-diagram"></i> Co-occurrence
+                      Analysis</span
+                    >
+                    <i class="fas fa-chevron-down tutorial-toggle-icon"></i>
+                  </h4>
+                  <p><strong>What:</strong></p>
+                  <p>
+                    Measure how often genre pairs appear together across all
+                    samples.
+                  </p>
+                  <p><strong>Why:</strong></p>
+                  <p>
+                    Correlation patterns expose semantic dependencies that
+                    improve joint embedding and multi-label prediction.
+                  </p>
+                  <p><strong>How:</strong></p>
+                  <p>
+                    Build a co-occurrence matrix from one-hot labels and render
+                    a heatmap to identify frequent genre pairs.
+                  </p>
+                </div>
+                <p>
+                  The correlation matrix visualizes how genres frequently appear
+                  together and supports the
+                  <strong>Joint Embedding</strong> strategy.
+                </p>
+                <div class="image-container">
+                  <img
+                    src="/public/multimodal/correlation_matrix.png"
+                    alt="Co-occurrence Heatmap"
+                  />
+                  <p class="caption">
+                    Figure 3: Heatmap illustrating the co-occurrence patterns
+                    between genres.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="toggle-item">
+              <button class="toggle-btn" type="button">
+                <span>Textual Feature Analysis</span>
+                <i class="fas fa-chevron-down"></i>
+              </button>
+              <div class="toggle-content">
+                <div class="tutorial-box">
+                  <h4>
+                    <span
+                      ><i class="fas fa-align-left"></i> Text Length
+                      Analysis</span
+                    >
+                    <i class="fas fa-chevron-down tutorial-toggle-icon"></i>
+                  </h4>
+                  <p><strong>What:</strong></p>
+                  <p>
+                    Inspect movie plot lengths to understand textual context
+                    distribution.
+                  </p>
+                  <p><strong>Why:</strong></p>
+                  <p>
+                    Length statistics guide tokenizer settings so meaningful
+                    context is preserved while controlling compute cost.
+                  </p>
+                  <p><strong>How:</strong></p>
+                  <p>
+                    Count words per plot, visualize the distribution, and choose
+                    an appropriate tokenizer <code>max_length</code>.
+                  </p>
+                </div>
+                <p>
+                  We analyzed the word count distribution of movie plots to
+                  choose a suitable <code>max_length</code> for DistilBERT.
+                </p>
+                <div class="image-container">
+                  <img
+                    src="/public/multimodal/text_length.png"
+                    alt="Text Length Distribution"
+                    style="max-width: 90%"
+                  />
+                  <p class="caption">
+                    Figure 4: Distribution of word counts in movie plot
+                    summaries.
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -653,7 +1147,7 @@
               style="max-width: 90%"
             />
             <p class="caption">
-              Figure 7: Distribution of aspect ratios in the dataset.
+              Figure 9: Distribution of image quality metrics in the dataset.
             </p>
           </div>
         </div>
@@ -1896,5 +2390,114 @@ if __name__ == "__main__":
       <p>© 2026 Group LTH - Ho Chi Minh City University of Technology</p>
       <p>Faculty of Computer Science and Engineering</p>
     </footer>
+    <script>
+      const progressBar = document.getElementById("scroll-progress");
+
+      const updateProgress = () => {
+        const total =
+          document.documentElement.scrollHeight - window.innerHeight;
+        const progress = total > 0 ? (window.scrollY / total) * 100 : 0;
+        progressBar.style.width = `${Math.min(Math.max(progress, 0), 100)}%`;
+      };
+
+      window.addEventListener("scroll", updateProgress, { passive: true });
+      updateProgress();
+
+      document.querySelectorAll(".toggle-btn").forEach((button) => {
+        button.addEventListener("click", () => {
+          button.parentElement.classList.toggle("is-open");
+        });
+      });
+
+      document.querySelectorAll(".tutorial-box h4").forEach((heading) => {
+        heading.addEventListener("click", () => {
+          heading.closest(".tutorial-box").classList.toggle("is-collapsed");
+        });
+      });
+
+      document.querySelectorAll(".code-tool-btn").forEach((button) => {
+        button.addEventListener("click", () => {
+          const content = button
+            .closest(".toggle-content")
+            .querySelector(".code-editor").value;
+          const action = button.dataset.action;
+
+          if (action === "copy") {
+            const textToCopy = content || "";
+            if (navigator.clipboard && window.isSecureContext) {
+              navigator.clipboard.writeText(textToCopy);
+            } else {
+              const hiddenInput = document.createElement("textarea");
+              hiddenInput.value = textToCopy;
+              hiddenInput.style.position = "fixed";
+              hiddenInput.style.opacity = "0";
+              document.body.appendChild(hiddenInput);
+              hiddenInput.focus();
+              hiddenInput.select();
+              document.execCommand("copy");
+              hiddenInput.remove();
+            }
+            return;
+          }
+
+          if (action === "download") {
+            const fileName = button.dataset.fileName;
+            const blob = new Blob([content || ""]);
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            URL.revokeObjectURL(url);
+          }
+        });
+      });
+
+      document.querySelectorAll(".code-editor").forEach((editor) => {
+        const shell = document.createElement("div");
+        shell.className = "code-editor-shell";
+
+        const lineNumbers = document.createElement("pre");
+        lineNumbers.className = "code-line-numbers";
+
+        const parent = editor.parentElement;
+        parent.insertBefore(shell, editor);
+        shell.appendChild(lineNumbers);
+        shell.appendChild(editor);
+
+        const lineCount = editor.value.split("\n").length;
+        lineNumbers.innerHTML = Array.from(
+          { length: lineCount },
+          (_, i) => `<span>${i + 1}</span>`,
+        ).join("");
+
+        const syncScroll = () => {
+          lineNumbers.scrollTop = editor.scrollTop;
+        };
+
+        editor.addEventListener("scroll", syncScroll, { passive: true });
+      });
+
+      const revealItems = document.querySelectorAll(
+        ".content-box, .image-container, .stats-grid",
+      );
+      revealItems.forEach((item) => item.classList.add("reveal"));
+
+      const revealObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.12 },
+      );
+
+      revealItems.forEach((item) => revealObserver.observe(item));
+    </script>
   </body>
 </html>
