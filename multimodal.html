@@ -111,6 +111,47 @@
         transform: scaleX(1);
       }
 
+      .section-controls {
+        position: fixed;
+        top: 78px;
+        right: 5%;
+        z-index: 1050;
+        display: flex;
+        gap: 10px;
+        padding: 8px;
+        border-radius: 999px;
+        background: rgba(20, 37, 61, 0.92);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+        backdrop-filter: blur(6px);
+      }
+
+      .section-controls button {
+        border: none;
+        border-radius: 999px;
+        padding: 8px 14px;
+        font-weight: 700;
+        cursor: pointer;
+        color: #1f3558;
+        background: #e9f1ff;
+        transition:
+          transform 0.2s ease,
+          background 0.2s ease;
+      }
+
+      .section-controls button:hover {
+        transform: translateY(-1px);
+        background: #d7e6ff;
+      }
+
+      .section-controls button[data-action="collapse-all"] {
+        color: #fff;
+        background: #d35400;
+      }
+
+      .section-controls button[data-action="collapse-all"]:hover {
+        background: #b84800;
+      }
+
       .scroll-progress {
         position: fixed;
         top: 0;
@@ -793,6 +834,17 @@
 
       /* Responsive */
       @media (max-width: 768px) {
+        .section-controls {
+          top: 72px;
+          width: calc(100% - 24px);
+          border-radius: 14px;
+          justify-content: center;
+        }
+        .section-controls button {
+          flex: 1;
+          padding: 10px 12px;
+          font-size: 0.9rem;
+        }
         .stats-grid {
           grid-template-columns: 1fr;
         }
@@ -838,6 +890,19 @@
         >
       </div>
     </nav>
+
+    <div
+      class="section-controls"
+      id="section-controls"
+      aria-label="Section Controls"
+    >
+      <button type="button" data-action="expand-all">
+        <i class="fas fa-expand-alt"></i> Expand All
+      </button>
+      <button type="button" data-action="collapse-all">
+        <i class="fas fa-compress-alt"></i> Collapse All
+      </button>
+    </div>
 
     <div class="container">
       <section id="dataset-exploration">
@@ -4225,6 +4290,60 @@ if __name__ == "__main__":
         });
       };
 
+      const setAllSectionsCollapsed = (shouldCollapse) => {
+        document.querySelectorAll(".section-title").forEach((title) => {
+          const container = title.parentElement;
+          if (
+            !container ||
+            !container.classList.contains("collapsible-section")
+          ) {
+            return;
+          }
+
+          container.classList.toggle("is-collapsed", shouldCollapse);
+          title.setAttribute("aria-expanded", String(!shouldCollapse));
+        });
+
+        requestAnimationFrame(() => {
+          forceRevealVisible();
+          requestAnimationFrame(forceRevealVisible);
+        });
+      };
+
+      const setupSectionControls = () => {
+        const controls = document.getElementById("section-controls");
+        if (!controls) {
+          return;
+        }
+
+        controls.addEventListener("click", (event) => {
+          const button = event.target.closest("button[data-action]");
+          if (!button) {
+            return;
+          }
+
+          const action = button.dataset.action;
+          if (action === "expand-all") {
+            setAllSectionsCollapsed(false);
+            return;
+          }
+
+          if (action === "collapse-all") {
+            setAllSectionsCollapsed(true);
+          }
+        });
+      };
+
+      const syncSectionControlsOffset = () => {
+        const nav = document.querySelector("nav");
+        const controls = document.getElementById("section-controls");
+        if (!nav || !controls) {
+          return;
+        }
+
+        controls.style.top = `${nav.offsetHeight + 10}px`;
+      };
+
       const setupPipelineSwitching = () => {
         const steps = document.querySelectorAll("[data-pipeline-step]");
         const panels = document.querySelectorAll("[data-pipeline-panel]");
@@ -4284,8 +4403,14 @@ if __name__ == "__main__":
       };
 
       setupSectionToggle();
+      setupSectionControls();
+      syncSectionControlsOffset();
       setupPipelineSwitching();
       setupStrategySwitching();
+
+      window.addEventListener("resize", syncSectionControlsOffset, {
+        passive: true,
+      });
     </script>
   </body>
 </html>
