@@ -41,7 +41,7 @@ genre_df = pd.DataFrame(genre_counts.items(), columns=['Genre', 'Count']).sort_v
 
 plt.figure(figsize=(12, 10))
 sns.barplot(data=genre_df, x='Count', y='Genre', hue='Genre', palette='viridis', legend=False)
-plt.title('Figure 1: Full Genre Distribution (All 26+ Classes)')
+plt.title('Full Genre Distribution (All 26+ Classes)')
 plt.xlabel('Number of Samples')
 plt.show()
 
@@ -49,7 +49,7 @@ plt.show()
 df['num_genres'] = df['genres_clean'].apply(len)
 plt.figure(figsize=(8, 5))
 sns.countplot(x='num_genres', data=df, palette='magma')
-plt.title('Figure 2: Number of Genres per Movie')
+plt.title('Number of Genres per Movie')
 plt.xlabel('Label Count')
 plt.ylabel('Frequency')
 plt.show()
@@ -61,14 +61,14 @@ genre_bin_df = pd.DataFrame(genre_bin, columns=mlb.classes_)
 
 plt.figure(figsize=(14, 10))
 sns.heatmap(genre_bin_df.corr(), annot=False, cmap='coolwarm', center=0)
-plt.title('Figure 3: Genre Correlation Matrix (Co-occurrence)')
+plt.title('Genre Correlation Matrix (Co-occurrence)')
 plt.show()
 
 # --- 6. TEXT LENGTH ANALYSIS ---
 df['plot_word_count'] = df['plot_clean'].apply(lambda x: len(x.split()))
 plt.figure(figsize=(10, 5))
 sns.histplot(df['plot_word_count'], bins=50, kde=True, color='teal')
-plt.title('Figure 4: Plot Word Count Distribution')
+plt.title('Plot Word Count Distribution')
 plt.xlabel('Number of Words')
 plt.show()
 
