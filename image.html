@@ -828,6 +828,43 @@
         transform: translateY(0);
       }
 
+      /* Video Demo Styles */
+      .video-demo-card {
+        width: 100%;
+        max-width: 100%;
+        aspect-ratio: 16 / 9;
+        overflow: hidden;
+        border-radius: 8px;
+      }
+
+      .video-placeholder {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .video-overlay {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        border-radius: 8px;
+        overflow: hidden;
+        background: #000;
+      }
+
+      .video-overlay video {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+      }
+
+      .video-container {
+        overflow: hidden;
+      }
+
       /* Responsive */
       @media (max-width: 768px) {
         .section-controls {
