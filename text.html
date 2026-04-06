@@ -740,7 +740,7 @@
                     <i class="fas fa-copy"></i> Copy
                   </button>
                   <a
-                    href="/text/eda.py"
+                    href="public/text/eda.py"
                     download="eda.py"
                     class="code-tool-btn"
                     style="text-decoration: none; display: inline-block"
@@ -906,14 +906,14 @@ if __name__ == "__main__":
                 <div class="grid-two-col">
                   <div class="image-container">
                     <img
-                      src="/text/1_Class_Distribution.png"
+                      src="public/text/1_Class_Distribution.png"
                       alt="Class Distribution Plot"
                     />
                     <p class="caption">Figure 1: Uniform Class Distribution.</p>
                   </div>
                   <div class="image-container">
                     <img
-                      src="/text/2_Word_Count_Distribution.png"
+                      src="public/text/2_Word_Count_Distribution.png"
                       alt="Word Count Distribution Plot"
                     />
                     <p class="caption">
@@ -939,7 +939,7 @@ if __name__ == "__main__":
 
                 <div class="image-container">
                   <img
-                    src="/text/3_Vocabulary_Richness.png"
+                    src="public/text/3_Vocabulary_Richness.png"
                     alt="Vocabulary Richness Plot"
                   />
                   <p class="caption">
@@ -961,14 +961,17 @@ if __name__ == "__main__":
 
                 <div class="image-container">
                   <img
-                    src="/text/4_Category_Similarity_Matrix.png"
+                    src="public/text/4_Category_Similarity_Matrix.png"
                     alt="Category Similarity Matrix"
                   />
                   <p class="caption">Figure 4: Category Similarity Matrix.</p>
                 </div>
 
                 <div class="image-container">
-                  <img src="/text/6_Bigrams.png" alt="Top 5 Bigrams Plot" />
+                  <img
+                    src="public/text/6_Bigrams.png"
+                    alt="Top 5 Bigrams Plot"
+                  />
                   <p class="caption">Figure 5: Top 5 Bigrams per category.</p>
                 </div>
               </div>
@@ -1351,7 +1354,7 @@ test_data = raw_dataset['test'].train_test_split(train_size=7000, stratify_by_co
                       <i class="fas fa-copy"></i> Copy
                     </button>
                     <a
-                      href="/text/glove.py"
+                      href="public/text/glove.py"
                       download="glove.py"
                       class="code-tool-btn"
                       style="text-decoration: none; display: inline-block"
@@ -1426,7 +1429,7 @@ def create_embedding_matrix(vocab, glove_dict, dim=100):
                       <i class="fas fa-copy"></i> Copy
                     </button>
                     <a
-                      href="/text/transformer.py"
+                      href="public/text/transformer.py"
                       download="transformer.py"
                       class="code-tool-btn"
                       style="text-decoration: none; display: inline-block"
@@ -1490,7 +1493,7 @@ def prepare_transformer_data(dataset, tokenizer, batch_size=32, shuffle=True):
                       <i class="fas fa-copy"></i> Copy
                     </button>
                     <a
-                      href="/text/rnn.py"
+                      href="public/text/rnn.py"
                       download="rnn.py"
                       class="code-tool-btn"
                       style="text-decoration: none; display: inline-block"
@@ -1564,7 +1567,7 @@ class BiGRU(BaseRNN):
                       <i class="fas fa-copy"></i> Copy
                     </button>
                     <a
-                      href="/text/train.py"
+                      href="public/text/train.py"
                       download="train.py"
                       class="code-tool-btn"
                       style="text-decoration: none; display: inline-block"
@@ -1713,28 +1716,28 @@ def train_model(model, train_loader, model_name, is_transformer=True, epochs=2):
           <div class="grid-two-col">
             <div class="image-container" style="margin-top: 0">
               <img
-                src="/text/distilbert_confusion_matrix.png"
+                src="public/text/distilbert_confusion_matrix.png"
                 alt="DistilBERT Confusion Matrix"
               />
               <p class="caption">Figure: DistilBERT Matrix</p>
             </div>
             <div class="image-container" style="margin-top: 0">
               <img
-                src="/text/roberta_confusion_matrix.png"
+                src="public/text/roberta_confusion_matrix.png"
                 alt="RoBERTa Confusion Matrix"
               />
               <p class="caption">Figure: RoBERTa Matrix</p>
             </div>
             <div class="image-container" style="margin-top: 0">
               <img
-                src="/text/bilstm_confusion_matrix.png"
+                src="public/text/bilstm_confusion_matrix.png"
                 alt="BiLSTM Confusion Matrix"
               />
               <p class="caption">Figure: BiLSTM Matrix</p>
             </div>
             <div class="image-container" style="margin-top: 0">
               <img
-                src="/text/bigru_confusion_matrix.png"
+                src="public/text/bigru_confusion_matrix.png"
                 alt="BiGRU Confusion Matrix"
               />
               <p class="caption">Figure: BiGRU Matrix</p>
@@ -1841,8 +1844,12 @@ def train_model(model, train_loader, model_name, is_transformer=True, epochs=2):
           <div class="video-demo-card">
             <div class="video-placeholder">
               <div class="video-overlay">
-                <video controls poster="anh-nen-video.jpg" preload="metadata">
-                  <source src="/text/demo.mp4" type="video/mp4" />
+                <video
+                  controls
+                  poster="public/text/anh-nen-video.jpg"
+                  preload="metadata"
+                >
+                  <source src="public/text/demo.mp4" type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
               </div>
