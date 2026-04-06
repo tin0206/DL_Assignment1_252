@@ -640,10 +640,6 @@
         margin-bottom: 15px;
       }
 
-      .video-container {
-        border-top: 4px solid var(--secondary-color);
-      }
-
       .video-demo-card {
         background: linear-gradient(140deg, #f8fbff 0%, #edf4ff 100%);
         border: 1px solid #dbe9ff;
@@ -1855,8 +1851,24 @@ if __name__ == "__main__":
         </div>
       </section>
 
+      <section id="video-demo">
+        <h2 class="section-title">5. Video Demo</h2>
+        <div class="content-box">
+          <div class="video-demo-card">
+            <div class="video-placeholder">
+              <div class="video-overlay">
+                <video controls poster="anh-nen-video.jpg" preload="metadata">
+                  <source src="./public/image/demo.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section id="source-code">
-        <h2 class="section-title">5. Source Code</h2>
+        <h2 class="section-title">6. Source Code</h2>
         <p class="intro-text">
           The complete implementation of this image classification project is
           available on GitHub:
@@ -1881,7 +1893,7 @@ if __name__ == "__main__":
       </section>
 
       <section id="conclusion">
-        <h2 class="section-title">6. Conclusion</h2>
+        <h2 class="section-title">7. Conclusion</h2>
 
         <div class="content-box conclusion-highlight">
           <h3>Key Findings & Insights</h3>
