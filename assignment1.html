@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Deep Learning Assignments - Group LTH</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f4f7f6;
+      }
+      .school-logo {
+        position: fixed;
+        top: 18px;
+        right: 22px;
+        z-index: 1000;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.94);
+        border-radius: 16px;
+        padding: 8px;
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+      }
+      .school-logo img {
+        display: block;
+        width: 68px;
+        height: auto;
+      }
+      header {
+        text-align: center;
+        padding: 40px 0;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+      }
+      h1 {
+        color: #2c3e50;
+        margin-bottom: 10px;
+      }
+      .group-info {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #e67e22;
+      }
+      .section {
+        background: #fff;
+        padding: 25px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        margin-bottom: 20px;
+      }
+      h2 {
+        border-bottom: 2px solid #3498db;
+        padding-bottom: 10px;
+        color: #2980b9;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+      li {
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+      }
+      li:last-child {
+        border-bottom: none;
+      }
+      .assignment-links {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-top: 20px;
+      }
+      .btn {
+        display: block;
+        text-align: center;
+        padding: 15px;
+        background: #3498db;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background 0.3s;
+      }
+      .btn:hover {
+        background: #2980b9;
+      }
+      .instructor {
+        font-style: italic;
+        color: #555;
+      }
+      @media (max-width: 768px) {
+        .school-logo {
+          top: 12px;
+          right: 12px;
+          padding: 6px;
+          border-radius: 12px;
+        }
+        .school-logo img {
+          width: 52px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="school-logo" href="index.html" aria-label="HCMUT Home">
+      <img src="public/hcmut.png" alt="HCMUT Logo" />
+    </a>
+
+    <header>
+      <h1>Assignment 1: Classification</h1>
+      <p class="group-info">Group: LTH (252)</p>
+      <p class="instructor">Instructor: Lê Thành Sách</p>
+    </header>
+
+    <div class="section">
+      <h2>Team Members</h2>
+      <ul>
+        <li>
+          <div>
+            <strong>Nguyễn Trung Tín</strong> (2353188)
+            <div>Leader</div>
+          </div>
+          <span>Multimodal Classification</span>
+        </li>
+        <li>
+          <div>
+            <strong>Ngô Đăng Hào</strong> (2352295)
+            <div>Member</div>
+          </div>
+          <span>Image Classification</span>
+        </li>
+        <li>
+          <div>
+            <strong>Nguyễn Đình Phi Long</strong> (2352690)
+            <div>Member</div>
+          </div>
+          <span>Text Classification</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Course Assignments</h2>
+      <p>Detailed reports and experimental results for each data type:</p>
+      <div class="assignment-links">
+        <a href="image.html" class="btn">Image Classification</a>
+        <a href="text.html" class="btn">Text Classification</a>
+        <a href="multimodal.html" class="btn">Multimodal Classification</a>
+      </div>
+    </div>
+
+    <footer
+      style="
+        text-align: center;
+        margin-top: 50px;
+        color: #888;
+        font-size: 0.9rem;
+      "
+    >
+      <p>HO CHI MINH CITY UNIVERSITY OF TECHNOLOGY (HCMUT)</p>
+      <p>Faculty of Computer Science and Engineering</p>
+    </footer>
+  </body>
+</html>
