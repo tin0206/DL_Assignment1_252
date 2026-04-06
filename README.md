@@ -20,7 +20,7 @@
 
 Sequence of major assignments conducted during the semester:
 
-### 📝 [Assignment 1: Classification](./assignment1.md)
+### 📝 Assignment 1: Classification
 
 Focusing on classification techniques across various data modalities. Click the assignment title to view detailed reports for:
 
